@@ -21,7 +21,7 @@ end
 """
     kernel_value_2D(kernel::WendlandC4, u::Real, h_inv::Real)
 
-Evaluate WendlandC4 spline at position ``u = \frac{x}{h}``.
+Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
 @inline function kernel_value_2D(kernel::WendlandC4, u::Real, h_inv::Real)
 
@@ -57,7 +57,7 @@ end
 """
     kernel_value_3D(kernel::WendlandC4, u::Real, h_inv::Real)
 
-Evaluate WendlandC4 spline at position ``u = \frac{x}{h}``.
+Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
 @inline function kernel_value_3D(kernel::WendlandC4, u::Real, h_inv::Real)
 
@@ -113,7 +113,7 @@ end
 """
     kernel_value_2D(kernel::WendlandC6, u::Real, h_inv::Real)
 
-Evaluate WendlandC6 spline at position ``u = \frac{x}{h}``.
+Evaluate WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """
 @inline function kernel_value_2D(kernel::WendlandC6, u::Real, h_inv::Real)
 

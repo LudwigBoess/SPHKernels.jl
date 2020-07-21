@@ -22,7 +22,7 @@ end
 """
     kernel_value_2D(kernel::Cubic, u::Real, h_inv::Real)
 
-Evaluate cubic spline at position ``u = \frac{x}{h}``.
+Evaluate cubic spline at position ``u = \\frac{x}{h}``.
 """
 @inline function kernel_value_2D(kernel::Cubic, u::Real, h_inv::Real)
 
@@ -64,7 +64,7 @@ end
 """
     kernel_value_3D(kernel::Cubic, u::Real, h_inv::Real)
 
-Evaluate cubic spline at position ``u = \frac{x}{h}``.
+Evaluate cubic spline at position ``u = \\frac{x}{h}``.
 """
 @inline function kernel_value_3D(kernel::Cubic, u::Real, h_inv::Real)
 
@@ -126,7 +126,7 @@ end
 """
     kernel_value_2D(kernel::Quintic, u::Real, h_inv::Real)
 
-Evaluate quintic spline at position ``u = \frac{x}{h}``.
+Evaluate quintic spline at position ``u = \\frac{x}{h}``.
 """
 @inline function kernel_value_2D(kernel::Quintic, u::Real, h_inv::Real)
 
@@ -180,7 +180,7 @@ end
 """
     kernel_value_3D(kernel::Quintic, u::Real, h_inv::Real)
 
-Evaluate quintic spline at position ``u = \frac{x}{h}``.
+Evaluate quintic spline at position ``u = \\frac{x}{h}``.
 """
 @inline function kernel_value_3D(kernel::Quintic, u::Real, h_inv::Real)
 
