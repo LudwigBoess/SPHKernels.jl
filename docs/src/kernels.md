@@ -1,5 +1,12 @@
 # Kernels
 
+```@meta
+CurrentModule = SPHKernels
+DocTestSetup = quote
+    using SPHKernels
+end
+```
+
 This package supplies a number of kernels frequently used in Smoothed-Particle Hydrodynamics (SPH), as well as functions to evaluate their values and derivatives in 2D and 3D.
 
 These kernels include the B-splines ([Cubic](@ref) and [Quintic](@ref)) suggested in [Monaghan & Lattanzio (1985)](https://ui.adsabs.harvard.edu/abs/1985A%26A...149..135M/abstract) and the Wendland functions ([WendlandC4](@ref) and [WendlandC6](@ref)) as suggested in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211).
@@ -28,4 +35,26 @@ Similar to [Evaluating Kernels](@ref) you can evluate a kernel derivative with
 
 ```julia
 kernel_deriv_2D(k::SPHKernel, u::Real, h_inv::Real)
+```
+
+## Bias Correction
+
+You can correct for the kernel bias of the Wendland kernels as described in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211), Eq. 18 + 19 with the functions:
+
+```julia
+bias_correction_2D(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
+bias_correction_3D(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
+```
+
+This will return a new value for the density:
+
+```@example
+using SPHKernels # hide
+density = 1.0
+kernel  = WendlandC6()
+
+# correct density
+density = bias_correction_3D(kernel, density, 1.0, 0.5)
+
+println("density = $density")
 ```

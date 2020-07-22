@@ -1,5 +1,12 @@
 # Table of contents
 
+```@meta
+CurrentModule = SPHKernels
+DocTestSetup = quote
+    using SPHKernels
+end
+```
+
 ```@contents
 Pages = [ "index.md", 
           "install.md", 
