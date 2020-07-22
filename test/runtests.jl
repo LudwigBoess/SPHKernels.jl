@@ -104,7 +104,7 @@ using SPHKernels, Test
         end
 
         @testset "2D bias correction" begin
-            k = Cubic()
+            k = Quintic()
             d = bias_correction_2D(k, 1.0, 0.0, 0.0)
             @test d ≈  1.0  
         end
@@ -142,7 +142,7 @@ using SPHKernels, Test
         end
 
         @testset "3D bias correction" begin
-            k = Cubic()
+            k = Quintic()
             d = bias_correction_3D(k, 1.0, 0.0, 0.0)
             @test d ≈  1.0  
         end
