@@ -54,6 +54,20 @@ Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}`
 
 end
 
+""" 
+    bias_correction_2D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+
+Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
+"""
+@inline function bias_correction_2D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+
+    @fastmath n = kernel.norm_2D * h_inv^3
+    @fastmath wc_correction = 0.01342 * ( kernel.n_neighbours * 0.01 )^(-1.579) * m * n
+    
+    return density - wc_correction
+end
+
+
 """
     kernel_value_3D(kernel::WendlandC4, u::Real, h_inv::Real)
 
@@ -88,6 +102,19 @@ Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}`
         return 0.
     end
 
+end
+
+""" 
+    bias_correction_3D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+
+Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
+"""
+@inline function bias_correction_3D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+
+    @fastmath n = kernel.norm_3D * h_inv^3
+    @fastmath wc_correction = 0.01342 * ( kernel.n_neighbours * 0.01 )^(-1.579) * m * n
+    
+    return density - wc_correction
 end
 
 
@@ -150,6 +177,24 @@ Evaluate the derivative of the WendlandC6 spline at position ``u = \\frac{x}{h}`
 
 end
 
+""" 
+    bias_correction_2D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+
+Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
+"""
+@inline function bias_correction_2D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+
+    @fastmath n = kernel.norm_2D * h_inv^3
+    @fastmath wc_correction = 0.0116 * ( kernel.n_neighbours * 0.01 )^(-2.236) * m * n
+
+    if wc_correction < 0.2*density
+        density -= wc_correction
+    end
+    
+    return density
+end
+
+
 """
     kernel_value_3D(kernel::WendlandC6, u::Real, h_inv::Real)
 
@@ -188,4 +233,22 @@ Evaluate the derivative of the WendlandC6 spline at position ``u = \\frac{x}{h}`
         return 0.0
     end
 
+end
+
+
+""" 
+    bias_correction_3D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+
+Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
+"""
+@inline function bias_correction_3D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+
+    @fastmath n = kernel.norm_3D * h_inv^3
+    @fastmath wc_correction = 0.0116 * ( kernel.n_neighbours * 0.01 )^(-2.236) * m * n
+
+    if wc_correction < 0.2*density
+        density -= wc_correction
+    end
+    
+    return density
 end

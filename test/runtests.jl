@@ -29,6 +29,12 @@ using SPHKernels, Test
             d = kernel_deriv_2D(k, 1.5, 0.5)
             @test d == 0.0
         end
+
+        @testset "2D bias correction" begin
+            k = Cubic()
+            d = bias_correction_2D(k, 1.0, 0.0, 0.0)
+            @test d ≈  1.0  
+        end
         
         @testset "3D value" begin
             k = Cubic()
@@ -54,6 +60,12 @@ using SPHKernels, Test
             # > 1.0
             d = kernel_deriv_3D(k, 1.5, 0.5)
             @test d == 0.0
+        end
+
+        @testset "3D bias correction" begin
+            k = Cubic()
+            d = bias_correction_3D(k, 1.0, 0.0, 0.0)
+            @test d ≈  1.0  
         end
     end
     
@@ -91,6 +103,12 @@ using SPHKernels, Test
             @test d == 0.0
         end
 
+        @testset "2D bias correction" begin
+            k = Cubic()
+            d = bias_correction_2D(k, 1.0, 0.0, 0.0)
+            @test d ≈  1.0  
+        end
+
         @testset "3D value" begin
             k = Quintic()
             # < 1/3
@@ -122,6 +140,12 @@ using SPHKernels, Test
             d = kernel_deriv_3D(k, 1.5, 0.5)
             @test d == 0.0
         end
+
+        @testset "3D bias correction" begin
+            k = Cubic()
+            d = bias_correction_3D(k, 1.0, 0.0, 0.0)
+            @test d ≈  1.0  
+        end
     end
 
     @testset "Wendland C4" begin
@@ -146,6 +170,13 @@ using SPHKernels, Test
             @test d == 0.0
         end
 
+        @testset "2D bias correction" begin
+            k = WendlandC4()
+            d = bias_correction_2D(k, 1.0, 1.0, 0.5)
+
+            @test d ≈ 0.9985755320162227
+        end
+
         @testset "3D value" begin
             k = WendlandC4()
             # < 1.0
@@ -164,6 +195,13 @@ using SPHKernels, Test
             # > 1.0
             d = kernel_deriv_3D(k, 1.5, 0.5)
             @test d == 0.0
+        end
+
+        @testset "3D bias correction" begin
+            k = WendlandC4()
+            d = bias_correction_3D(k, 1.0, 1.0, 0.5)
+
+            @test d ≈ 0.9975516956528828
         end
     end
 
@@ -189,6 +227,13 @@ using SPHKernels, Test
             @test d == 0.0
         end
 
+        @testset "2D bias correction" begin
+            k = WendlandC6()
+            d = bias_correction_2D(k, 1.0, 1.0, 0.5)
+
+            @test d ≈ 0.9995421822101074
+        end
+
         @testset "3D value" begin
             k = WendlandC6()
             # < 1.0
@@ -207,6 +252,13 @@ using SPHKernels, Test
             # > 1.0
             d = kernel_deriv_3D(k, 1.5, 0.5)
             @test d == 0.0
+        end
+
+        @testset "3D bias correction" begin
+            k = WendlandC6()
+            d = bias_correction_3D(k, 1.0, 1.0, 0.5)
+
+            @test d ≈ 0.9991237081365336
         end
     end
 

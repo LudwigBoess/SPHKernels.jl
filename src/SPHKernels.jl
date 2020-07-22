@@ -8,6 +8,8 @@ module SPHKernels
             kernel_value_3D,
             kernel_deriv_2D,
             kernel_deriv_3D,
+            bias_correction_2D,
+            bias_correction_3D,
             SPHKernel,
             Cubic, 
             Quintic,

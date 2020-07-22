@@ -59,6 +59,14 @@ Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
 
 end
 
+""" 
+    bias_correction_2D(kernel::Cubic, density::Real, m::Real, h_inv::Real)
+
+Does not do anything for the BSplines. Implemented for stability.
+"""
+@inline function bias_correction_2D(kernel::Cubic, density::Real, m::Real, h_inv::Real)  
+    return density
+end
 
 
 """
@@ -99,6 +107,15 @@ Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
         return 0.
     end
 
+end
+
+""" 
+    bias_correction_3D(kernel::Cubic, density::Real, m::Real, h_inv::Real)
+
+Does not do anything for the BSplines. Implemented for stability.
+"""
+@inline function bias_correction_3D(kernel::Cubic, density::Real, m::Real, h_inv::Real)  
+    return density
 end
 
 
@@ -177,6 +194,15 @@ Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
 
 end
 
+""" 
+    bias_correction_2D(kernel::Quintic, density::Real, m::Real, h_inv::Real)
+
+Does not do anything for the BSplines. Implemented for stability.
+"""
+@inline function bias_correction_2D(kernel::Quintic, density::Real, m::Real, h_inv::Real)  
+    return density
+end
+
 """
     kernel_value_3D(kernel::Quintic, u::Real, h_inv::Real)
 
@@ -229,4 +255,13 @@ Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
         return 0.
     end
 
+end
+
+""" 
+    bias_correction_3D(kernel::Quintic, density::Real, m::Real, h_inv::Real)
+
+Does not do anything for the BSplines. Implemented for stability.
+"""
+@inline function bias_correction_3D(kernel::Quintic, density::Real, m::Real, h_inv::Real)  
+    return density
 end
