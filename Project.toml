@@ -1,7 +1,7 @@
 name = "SPHKernels"
 uuid = "54ab9b88-2582-4358-b400-8014666a1730"
 authors = ["LudwigBoess <lboess@usm.lmu.de>"]
-version = "1.1.0"
+version = "1.1.1"
 
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
@@ -11,4 +11,4 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 [compat]
 Documenter = "0.25"
 DocumenterTools = "0.1"
-julia = "1.4.2"
+julia = "1.0"
