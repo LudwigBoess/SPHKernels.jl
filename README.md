@@ -15,7 +15,7 @@ In this implementation we follow the convention of Dehnen&Aly in using the 'comp
 To evaluate a 2D kernel you need to use the function
 
 ```julia
-kernel_value_2D(k::SPHKernel, u::Real, h_inv::Real)
+kernel_value_2D(k::SPHKernel, u::Float64, h_inv::Float64)
 ```
 
 where `SPHKernel` is the supertype for an implemented SPH kernel, `u = x/h` is the distance to the kernel origin in measures of the compact kernel support and `h_inv` is the inverse of the compact kernel support.
@@ -23,7 +23,7 @@ where `SPHKernel` is the supertype for an implemented SPH kernel, `u = x/h` is t
 The same goes for a 3D kernel
 
 ```julia
-kernel_value_3D(k::SPHKernel, u::Real, h_inv::Real)
+kernel_value_3D(k::SPHKernel, u::Float64, h_inv::Float64)
 ```
 
 ## Evaluating Derivatives
@@ -31,7 +31,7 @@ kernel_value_3D(k::SPHKernel, u::Real, h_inv::Real)
 Similar to before you can evluate a kernel derivative with
 
 ```julia
-kernel_deriv_2D(k::SPHKernel, u::Real, h_inv::Real)
+kernel_deriv_2D(k::SPHKernel, u::Float64, h_inv::Float64)
 ```
 
 Please see the docs for more details!
