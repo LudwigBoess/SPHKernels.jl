@@ -1,29 +1,29 @@
 
 """
     struct WendlandC4 <: SPHKernel
-        n_neighbours::Integer
-        norm_2D::Real
-        norm_3D::Real
-        function WendlandC4(n_neighbours::Integer=216)
+        n_neighbours::Int64
+        norm_2D::Float64
+        norm_3D::Float64
+        function WendlandC4(n_neighbours::Int64=216)
             new(n_neighbours,9.0/π, 495.0/(32.0 * π))
         end
     end
 """
 struct WendlandC4 <: SPHKernel
-    n_neighbours::Integer
-    norm_2D::Real
-    norm_3D::Real
-    function WendlandC4(n_neighbours::Integer=216)
+    n_neighbours::Int64
+    norm_2D::Float64
+    norm_3D::Float64
+    function WendlandC4(n_neighbours::Int64=216)
         new(n_neighbours, 9.0/π, 495.0/(32.0 * π))
     end
 end
 
 """
-    kernel_value_2D(kernel::WendlandC4, u::Real, h_inv::Real)
+    kernel_value_2D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
 Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_2D(kernel::WendlandC4, u::Real, h_inv::Real)
+@inline function kernel_value_2D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
     @fastmath if u < 1.0
         n = kernel.norm_2D * h_inv^2
@@ -37,11 +37,11 @@ Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 end
 
 """
-    kernel_deriv_2D(kernel::WendlandC4, u::Real, h_inv::Real)
+    kernel_deriv_2D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
 Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_2D(kernel::WendlandC4, u::Real, h_inv::Real)
+@inline function kernel_deriv_2D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
     @fastmath if u < 1.0
         n = kernel.norm_2D * h_inv^3
@@ -55,11 +55,11 @@ Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}`
 end
 
 """ 
-    bias_correction_2D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+    bias_correction_2D(kernel::WendlandC4, density::Float64, m::Float64, h_inv::Float64)
 
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
-@inline function bias_correction_2D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+@inline function bias_correction_2D(kernel::WendlandC4, density::Float64, m::Float64, h_inv::Float64)
 
     @fastmath n = kernel.norm_2D * h_inv^3
     @fastmath wc_correction = 0.01342 * ( kernel.n_neighbours * 0.01 )^(-1.579) * m * n
@@ -69,11 +69,11 @@ end
 
 
 """
-    kernel_value_3D(kernel::WendlandC4, u::Real, h_inv::Real)
+    kernel_value_3D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
 Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_3D(kernel::WendlandC4, u::Real, h_inv::Real)
+@inline function kernel_value_3D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
     @fastmath  if u < 1.0
         n = kernel.norm_3D * h_inv^3
@@ -87,11 +87,11 @@ Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 end
 
 """
-    kernel_deriv_3D(kernel::WendlandC4, u::Real, h_inv::Real)
+    kernel_deriv_3D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
 Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_3D(kernel::WendlandC4, u::Real, h_inv::Real)
+@inline function kernel_deriv_3D(kernel::WendlandC4, u::Float64, h_inv::Float64)
 
     if u < 1.0
         n = kernel.norm_3D * h_inv^4
@@ -105,11 +105,11 @@ Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}`
 end
 
 """ 
-    bias_correction_3D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+    bias_correction_3D(kernel::WendlandC4, density::Float64, m::Float64, h_inv::Float64)
 
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
-@inline function bias_correction_3D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+@inline function bias_correction_3D(kernel::WendlandC4, density::Float64, m::Float64, h_inv::Float64)
 
     @fastmath n = kernel.norm_3D * h_inv^3
     @fastmath wc_correction = 0.01342 * ( kernel.n_neighbours * 0.01 )^(-1.579) * m * n
@@ -120,29 +120,29 @@ end
 
 """
     struct WendlandC6 <: SPHKernel
-        n_neighbours::Integer
-        norm_2D::Real
-        norm_3D::Real
-        function WendlandC6(n_neighbours::Integer=295)
+        n_neighbours::Int64
+        norm_2D::Float64
+        norm_3D::Float64
+        function WendlandC6(n_neighbours::Int64=295)
             new(n_neighbours, 78.0/(7.0*π), 1365.0/(64.0*π))
         end
     end
 """
 struct WendlandC6 <: SPHKernel
-    n_neighbours::Integer
-    norm_2D::Real
-    norm_3D::Real
-    function WendlandC6(n_neighbours::Integer=295)
+    n_neighbours::Int64
+    norm_2D::Float64
+    norm_3D::Float64
+    function WendlandC6(n_neighbours::Int64=295)
         new(n_neighbours, 78.0/(7.0*π), 1365.0/(64.0*π))
     end
 end
 
 """
-    kernel_value_2D(kernel::WendlandC6, u::Real, h_inv::Real)
+    kernel_value_2D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
 Evaluate WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_2D(kernel::WendlandC6, u::Real, h_inv::Real)
+@inline function kernel_value_2D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
     @fastmath if u < 1.0
         n = kernel.norm_2D * h_inv^2
@@ -159,11 +159,11 @@ Evaluate WendlandC6 spline at position ``u = \\frac{x}{h}``.
 end
 
 """
-    kernel_deriv_2D(kernel::WendlandC6, u::Real, h_inv::Real)
+    kernel_deriv_2D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
 Evaluate the derivative of the WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_2D(kernel::WendlandC6, u::Real, h_inv::Real)
+@inline function kernel_deriv_2D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
 
     @fastmath if u < 1.0
@@ -178,11 +178,11 @@ Evaluate the derivative of the WendlandC6 spline at position ``u = \\frac{x}{h}`
 end
 
 """ 
-    bias_correction_2D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+    bias_correction_2D(kernel::WendlandC6, density::Float64, m::Float64, h_inv::Float64)
 
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
-@inline function bias_correction_2D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+@inline function bias_correction_2D(kernel::WendlandC6, density::Float64, m::Float64, h_inv::Float64)
 
     @fastmath n = kernel.norm_2D * h_inv^3
     @fastmath wc_correction = 0.0116 * ( kernel.n_neighbours * 0.01 )^(-2.236) * m * n
@@ -196,11 +196,11 @@ end
 
 
 """
-    kernel_value_3D(kernel::WendlandC6, u::Real, h_inv::Real)
+    kernel_value_3D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
 Evaluate WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_3D(kernel::WendlandC6, u::Real, h_inv::Real)
+@inline function kernel_value_3D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
     @fastmath if u < 1.0
         n = kernel.norm_3D * h_inv^3
@@ -217,11 +217,11 @@ Evaluate WendlandC6 spline at position ``u = \\frac{x}{h}``.
 end
 
 """
-    kernel_deriv_3D(kernel::WendlandC6, u::Real, h_inv::Real)
+    kernel_deriv_3D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
 Evaluate the derivative of the WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_3D(kernel::WendlandC6, u::Real, h_inv::Real)
+@inline function kernel_deriv_3D(kernel::WendlandC6, u::Float64, h_inv::Float64)
 
 
     @fastmath if u < 1.0
@@ -237,11 +237,11 @@ end
 
 
 """ 
-    bias_correction_3D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+    bias_correction_3D(kernel::WendlandC6, density::Float64, m::Float64, h_inv::Float64)
 
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
-@inline function bias_correction_3D(kernel::WendlandC6, density::Real, m::Real, h_inv::Real)
+@inline function bias_correction_3D(kernel::WendlandC6, density::Float64, m::Float64, h_inv::Float64)
 
     @fastmath n = kernel.norm_3D * h_inv^3
     @fastmath wc_correction = 0.0116 * ( kernel.n_neighbours * 0.01 )^(-2.236) * m * n
