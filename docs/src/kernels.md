@@ -18,7 +18,7 @@ In this implementation we follow the convention of Dehnen&Aly in using the 'comp
 To evaluate a 2D kernel you need to use the function
 
 ```julia
-kernel_value_2D(k::SPHKernel, u::Real, h_inv::Real)
+kernel_value_2D(k::SPHKernel, u::Float64, h_inv::Float64)
 ```
 
 where [SPHKernel](@ref) is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the compact kernel support and `h_inv` is the inverse of the compact kernel support.
@@ -26,7 +26,7 @@ where [SPHKernel](@ref) is the supertype for an implemented SPH kernel, ``u = \f
 The same goes for a 3D kernel
 
 ```julia
-kernel_value_3D(k::SPHKernel, u::Real, h_inv::Real)
+kernel_value_3D(k::SPHKernel, u::Float64, h_inv::Float64)
 ```
 
 ## Evaluating Derivatives
@@ -34,7 +34,7 @@ kernel_value_3D(k::SPHKernel, u::Real, h_inv::Real)
 Similar to [Evaluating Kernels](@ref) you can evluate a kernel derivative with
 
 ```julia
-kernel_deriv_2D(k::SPHKernel, u::Real, h_inv::Real)
+kernel_deriv_2D(k::SPHKernel, u::Float64, h_inv::Float64)
 ```
 
 ## Bias Correction
@@ -42,8 +42,8 @@ kernel_deriv_2D(k::SPHKernel, u::Real, h_inv::Real)
 You can correct for the kernel bias of the Wendland kernels as described in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211), Eq. 18 + 19 with the functions:
 
 ```julia
-bias_correction_2D(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
-bias_correction_3D(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
+bias_correction_2D(kernel::SPHKernel, density::Float64, m::Float64, h_inv::Float64)
+bias_correction_3D(kernel::SPHKernel, density::Float64, m::Float64, h_inv::Float64)
 ```
 
 This will return a new value for the density:

@@ -12,10 +12,10 @@ If you need a different kernel function than the ones I implemented you can add 
 ```@example 1
 using SPHKernels # hide
 struct MyKernel <: SPHKernel
-    n_neighbours::Integer
-    norm_2D::Real
-    norm_3D::Real
-    function MyKernel(n_neighbours::Integer=1000)
+    n_neighbours::Int64
+    norm_2D::Float64
+    norm_3D::Float64
+    function MyKernel(n_neighbours::Int64=1000)
         new(n_neighbours, 1.0, 1.0)
     end
 end
@@ -24,7 +24,7 @@ end
 and defining its value and derivative in 2D and 3D, e.g.
 
 ```@example 1
-@inline function kernel_value_2D(kernel::MyKernel, u::Real, h_inv::Real)
+@inline function kernel_value_2D(kernel::MyKernel, u::Float64, h_inv::Float64)
 
     if u < 1.0
         n = kernel.norm_2D * h_inv^2
@@ -37,7 +37,7 @@ end
 ```
 
 ```@example 1
-@inline function kernel_deriv_2D(kernel::MyKernel, u::Real, h_inv::Real)
+@inline function kernel_deriv_2D(kernel::MyKernel, u::Float64, h_inv::Float64)
     return 0.0
 end
 ```
