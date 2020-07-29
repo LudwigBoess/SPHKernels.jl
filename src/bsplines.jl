@@ -20,11 +20,11 @@ struct Cubic <: SPHKernel
 end
 
 """
-    kernel_value_2D(kernel::Cubic, u::Float64, h_inv::Float64)
+    kernel_value_2D(kernel::Cubic, u::Real, h_inv::Real)
 
 Evaluate cubic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_2D(kernel::Cubic, u::Float64, h_inv::Float64)
+@inline function kernel_value_2D(kernel::Cubic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_2D * h_inv^2
 
@@ -40,11 +40,11 @@ Evaluate cubic spline at position ``u = \\frac{x}{h}``.
 end
 
 """
-    kernel_deriv_2D(kernel::Cubic, u::Float64, h_inv::Float64)
+    kernel_deriv_2D(kernel::Cubic, u::Real, h_inv::Real)
 
 Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_2D(kernel::Cubic, u::Float64, h_inv::Float64)
+@inline function kernel_deriv_2D(kernel::Cubic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_2D * h_inv^3
 
@@ -60,21 +60,21 @@ Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
 end
 
 """ 
-    bias_correction_2D(kernel::Cubic, density::Float64, m::Float64, h_inv::Float64)
+    bias_correction_2D(kernel::Cubic, density::Real, m::Real, h_inv::Real)
 
 Does not do anything for the BSplines. Implemented for stability.
 """
-@inline function bias_correction_2D(kernel::Cubic, density::Float64, m::Float64, h_inv::Float64)  
+@inline function bias_correction_2D(kernel::Cubic, density::Real, m::Real, h_inv::Real)  
     return density
 end
 
 
 """
-    kernel_value_3D(kernel::Cubic, u::Float64, h_inv::Float64)
+    kernel_value_3D(kernel::Cubic, u::Real, h_inv::Real)
 
 Evaluate cubic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_3D(kernel::Cubic, u::Float64, h_inv::Float64)
+@inline function kernel_value_3D(kernel::Cubic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_3D * h_inv^3
     u_m1 = (1.0 - u )
@@ -90,11 +90,11 @@ end
 
 
 """
-    kernel_deriv_3D(kernel::Cubic, u::Float64, h_inv::Float64)
+    kernel_deriv_3D(kernel::Cubic, u::Real, h_inv::Real)
 
 Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_3D(kernel::Cubic, u::Float64, h_inv::Float64)
+@inline function kernel_deriv_3D(kernel::Cubic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_3D * h_inv^4
 
@@ -110,11 +110,11 @@ Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
 end
 
 """ 
-    bias_correction_3D(kernel::Cubic, density::Float64, m::Float64, h_inv::Float64)
+    bias_correction_3D(kernel::Cubic, density::Real, m::Real, h_inv::Real)
 
 Does not do anything for the BSplines. Implemented for stability.
 """
-@inline function bias_correction_3D(kernel::Cubic, density::Float64, m::Float64, h_inv::Float64)  
+@inline function bias_correction_3D(kernel::Cubic, density::Real, m::Real, h_inv::Real)  
     return density
 end
 
@@ -141,11 +141,11 @@ struct Quintic <: SPHKernel
 end
 
 """
-    kernel_value_2D(kernel::Quintic, u::Float64, h_inv::Float64)
+    kernel_value_2D(kernel::Quintic, u::Real, h_inv::Real)
 
 Evaluate quintic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_2D(kernel::Quintic, u::Float64, h_inv::Float64)
+@inline function kernel_value_2D(kernel::Quintic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_2D * h_inv^2
 
@@ -168,11 +168,11 @@ Evaluate quintic spline at position ``u = \\frac{x}{h}``.
 end
 
 """
-    kernel_deriv_2D(kernel::Quintic, u::Float64, h_inv::Float64)
+    kernel_deriv_2D(kernel::Quintic, u::Real, h_inv::Real)
 
 Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_2D(kernel::Quintic, u::Float64, h_inv::Float64)
+@inline function kernel_deriv_2D(kernel::Quintic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_2D * h_inv^3
 
@@ -195,20 +195,20 @@ Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
 end
 
 """ 
-    bias_correction_2D(kernel::Quintic, density::Float64, m::Float64, h_inv::Float64)
+    bias_correction_2D(kernel::Quintic, density::Real, m::Real, h_inv::Real)
 
 Does not do anything for the BSplines. Implemented for stability.
 """
-@inline function bias_correction_2D(kernel::Quintic, density::Float64, m::Float64, h_inv::Float64)  
+@inline function bias_correction_2D(kernel::Quintic, density::Real, m::Real, h_inv::Real)  
     return density
 end
 
 """
-    kernel_value_3D(kernel::Quintic, u::Float64, h_inv::Float64)
+    kernel_value_3D(kernel::Quintic, u::Real, h_inv::Real)
 
 Evaluate quintic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_value_3D(kernel::Quintic, u::Float64, h_inv::Float64)
+@inline function kernel_value_3D(kernel::Quintic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_3D * h_inv^3
 
@@ -231,11 +231,11 @@ Evaluate quintic spline at position ``u = \\frac{x}{h}``.
 end
 
 """
-    kernel_deriv_3D(kernel::Quintic, u::Float64, h_inv::Float64)
+    kernel_deriv_3D(kernel::Quintic, u::Real, h_inv::Real)
 
 Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
 """
-@inline function kernel_deriv_3D(kernel::Quintic, u::Float64, h_inv::Float64)
+@inline function kernel_deriv_3D(kernel::Quintic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_3D * h_inv^4
 
@@ -258,10 +258,10 @@ Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
 end
 
 """ 
-    bias_correction_3D(kernel::Quintic, density::Float64, m::Float64, h_inv::Float64)
+    bias_correction_3D(kernel::Quintic, density::Real, m::Real, h_inv::Real)
 
 Does not do anything for the BSplines. Implemented for stability.
 """
-@inline function bias_correction_3D(kernel::Quintic, density::Float64, m::Float64, h_inv::Float64)  
+@inline function bias_correction_3D(kernel::Quintic, density::Real, m::Real, h_inv::Real)  
     return density
 end
