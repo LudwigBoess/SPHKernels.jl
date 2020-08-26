@@ -13,7 +13,7 @@ struct WendlandC4 <: SPHKernel
     n_neighbours::Int64
     norm_2D::Float64
     norm_3D::Float64
-    function WendlandC4(n_neighbours::Int64=216)
+    function WendlandC4(n_neighbours::Integer=216)
         new(n_neighbours, 9.0/π, 495.0/(32.0 * π))
     end
 end
@@ -132,7 +132,7 @@ struct WendlandC6 <: SPHKernel
     n_neighbours::Int64
     norm_2D::Float64
     norm_3D::Float64
-    function WendlandC6(n_neighbours::Int64=295)
+    function WendlandC6(n_neighbours::Integer=295)
         new(n_neighbours, 78.0/(7.0*π), 1365.0/(64.0*π))
     end
 end

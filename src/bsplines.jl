@@ -14,7 +14,7 @@ struct Cubic <: SPHKernel
     n_neighbours::Int64
     norm_2D::Float64
     norm_3D::Float64
-    function Cubic(n_neighbours::Int64=64)
+    function Cubic(n_neighbours::Integer=64)
         new(n_neighbours, 8.0/π, 8.0/π)
     end
 end
@@ -124,7 +124,7 @@ end
         n_neighbours::Int64
         norm_2D::Float64
         norm_3D::Float64
-        function Quintic(n_neighbours::Int64=216)
+        function Quintic(n_neighbours::Integer=216)
             new(n_neighbours, 15309.0/(478.0*π), 2187.0/(40.0*pi))
         end
     end
@@ -135,7 +135,7 @@ struct Quintic <: SPHKernel
     n_neighbours::Int64
     norm_2D::Float64
     norm_3D::Float64
-    function Quintic(n_neighbours::Int64=216)
+    function Quintic(n_neighbours::Integer=216)
         new(n_neighbours, 15309.0/(478.0*π), 2187.0/(40.0*pi))
     end
 end
