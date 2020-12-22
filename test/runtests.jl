@@ -8,10 +8,10 @@ using SPHKernels, Test
             k = Cubic()
             # < 0.5
             d = kernel_value_2D(k, 0.4, 0.5)
-            @test d ≈ 0.26992678348385446       
+            @test d ≈ 0.19280484534561032       
             # < 1.0
             d = kernel_value_2D(k, 0.5, 0.5)
-            @test d ≈ 0.15915494309189535
+            @test d ≈ 0.11368210220849667
             # > 1.0
             d = kernel_value_2D(k, 1.5, 0.5)
             @test d == 0.0
@@ -21,10 +21,10 @@ using SPHKernels, Test
             k = Cubic()
             # < 0.5
             d = kernel_deriv_2D(k, 0.4, 0.5)
-            @test d ≈ -0.6111549814728781      
+            @test d ≈ -0.4365392724806272     
             # < 1.0
             d = kernel_deriv_2D(k, 0.5, 0.5)
-            @test d ≈ -0.477464829275686
+            @test d ≈ -0.34104630662549
             # > 1.0
             d = kernel_deriv_2D(k, 1.5, 0.5)
             @test d == 0.0
@@ -40,7 +40,7 @@ using SPHKernels, Test
             k = Cubic()
             # < 0.5
             d = kernel_value_3D(k, 0.4, 0.5)
-            @test d ≈ 0.5016563806256541
+            @test d ≈ 0.13496339174192723
             # < 1.0
             d = kernel_value_3D(k, 0.5, 0.5)
             @test d ≈ 0.07957747154594767
@@ -53,7 +53,7 @@ using SPHKernels, Test
             k = Cubic()
             # < 0.5
             d = kernel_deriv_3D(k, 0.4, 0.5)
-            @test d ≈ -0.30557749073643903     
+            @test d ≈ -0.30557749073643903    
             # < 1.0
             d = kernel_deriv_3D(k, 0.5, 0.5)
             @test d ≈ -0.238732414637843
@@ -154,7 +154,7 @@ using SPHKernels, Test
             k = WendlandC4()
             # < 1.0
             d = kernel_value_2D(k, 0.5, 0.5)
-            @test d ≈ 0.15480305011672632
+            @test d ≈ 0.07740152505836316
             # > 1.0
             d = kernel_value_2D(k, 1.5, 0.5)
             @test d == 0.0
@@ -191,7 +191,7 @@ using SPHKernels, Test
             k = WendlandC4()
             # < 1.0
             d = kernel_deriv_3D(k, 0.5, 0.5)
-            @test d ≈ -0.3205635450459318
+            @test d ≈ -0.6411270900918636
             # > 1.0
             d = kernel_deriv_3D(k, 1.5, 0.5)
             @test d == 0.0
@@ -259,6 +259,63 @@ using SPHKernels, Test
             d = bias_correction_3D(k, 1.0, 1.0, 0.5)
 
             @test d ≈ 0.9991237081365336
+        end
+    end
+
+    @testset "Wendland C8" begin
+
+        @testset "2D value" begin
+            k = WendlandC8()
+            # < 1.0
+            d = kernel_value_2D(k, 0.5, 0.5)
+            @test d ≈ 0.034310013366734275
+            # > 1.0
+            d = kernel_value_2D(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "2D derivative" begin
+            k = WendlandC8()
+            # < 1.0
+            d = kernel_deriv_2D(k, 0.5, 0.5)
+            @test d ≈ -0.5179270722948169
+            # > 1.0
+            d = kernel_deriv_2D(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "2D bias correction" begin
+            k = WendlandC8()
+            d = bias_correction_2D(k, 1.0, 1.0, 0.5)
+
+            @test d ≈ 1.0
+        end
+
+        @testset "3D value" begin
+            k = WendlandC8()
+            # < 1.0
+            d = kernel_value_3D(k, 0.5, 0.5)
+            @test d ≈ 0.034310013366734275
+            # > 1.0
+            d = kernel_value_3D(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "3D derivative" begin
+            k = WendlandC8()
+            # < 1.0
+            d = kernel_deriv_3D(k, 0.5, 0.5)
+            @test d ≈ -0.5179270722948169
+            # > 1.0
+            d = kernel_deriv_3D(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "3D bias correction" begin
+            k = WendlandC8()
+            d = bias_correction_3D(k, 1.0, 1.0, 0.5)
+
+            @test d ≈ 1.0
         end
     end
 
