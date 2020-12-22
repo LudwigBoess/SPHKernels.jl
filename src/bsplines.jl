@@ -15,7 +15,7 @@ struct Cubic <: SPHKernel
     norm_2D::Float64
     norm_3D::Float64
     function Cubic(n_neighbours::Integer=64)
-        new(n_neighbours, 8.0/π, 8.0/π)
+        new(n_neighbours, 40.0/7π, 8.0/π)
     end
 end
 
@@ -29,7 +29,7 @@ Evaluate cubic spline at position ``u = \\frac{x}{h}``.
     @fastmath n = kernel.norm_2D * h_inv^2
 
     @fastmath if u < 0.5
-        return ( 1.0 - 6.0 * (1.0 - u ) * u^2) * n
+        return ( 1.0 + 6.0 * ( u - 1.0 ) * u^2) * n
     elseif u < 1.0
         u_m1 = (1.0 - u )
         return ( 2.0 * u_m1^3 ) * n
@@ -77,10 +77,11 @@ Evaluate cubic spline at position ``u = \\frac{x}{h}``.
 @inline function kernel_value_3D(kernel::Cubic, u::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_3D * h_inv^3
-    u_m1 = (1.0 - u )
+    
     @fastmath if u < 0.5
-        return ( 1.0 + 6.0 * u_m1 * u^2) * n
+        return ( 1.0 + 6.0 * ( u - 1.0 ) * u^2) * n
     elseif u < 1.0
+        u_m1 = (1.0 - u )
         return ( 2.0 * u_m1^3 ) * n
     else
         return 0.
@@ -101,7 +102,7 @@ Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
     @fastmath if u < 0.5
         return ( u * (18.0 * u - 12.0 )) * n
     elseif u < 1.0
-        u_m1 = (1.0 - u )
+        u_m1 = ( 1.0 - u )
         return ( -6.0 * u_m1^2 ) * n
     else
         return 0.

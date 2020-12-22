@@ -14,7 +14,8 @@ module SPHKernels
             Cubic, 
             Quintic,
             WendlandC4,
-            WendlandC6
+            WendlandC6,
+            WendlandC8
         
 
     """
