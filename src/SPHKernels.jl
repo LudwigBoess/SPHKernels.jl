@@ -4,10 +4,13 @@
 
 module SPHKernels
 
-    export  kernel_value_2D,
+    export  kernel_value_1D,
+            kernel_value_2D,
             kernel_value_3D,
+            kernel_deriv_1D,
             kernel_deriv_2D,
             kernel_deriv_3D,
+            bias_correction_1D,
             bias_correction_2D,
             bias_correction_3D,
             SPHKernel,
