@@ -4,15 +4,15 @@
 
 module SPHKernels
 
-    export  kernel_value_1D,
-            kernel_value_2D,
-            kernel_value_3D,
-            kernel_deriv_1D,
-            kernel_deriv_2D,
-            kernel_deriv_3D,
-            bias_correction_1D,
-            bias_correction_2D,
-            bias_correction_3D,
+    export  kernel_value_1D,     𝒲₁,
+            kernel_value_2D,     𝒲₂,
+            kernel_value_3D,     𝒲₃,
+            kernel_deriv_1D,    ∇𝒲₁,
+            kernel_deriv_2D,    ∇𝒲₂,
+            kernel_deriv_3D,    ∇𝒲₃,
+            bias_correction_1D, δρ₁,
+            bias_correction_2D, δρ₂,
+            bias_correction_3D, δρ₃,
             SPHKernel,
             Cubic, 
             Quintic,
@@ -32,4 +32,69 @@ module SPHKernels
     include("bsplines.jl")
     include("wendland.jl")
 
+    # multiple dispatch for nicer look
+
+    """
+        𝒲₁( kernel::SPHKernel, u::Real, h_inv::Real)
+
+    Evaluate 1D spline at position ``u = \\frac{x}{h}``.
+    """
+    𝒲₁( kernel::SPHKernel, u::Real, h_inv::Real) = kernel_value_1D(kernel, u, h_inv)
+    
+    """
+        ∇𝒲₁( kernel::SPHKernel, u::Real, h_inv::Real)
+
+    Evaluate 1D derivative at position ``u = \\frac{x}{h}``.
+    """
+    ∇𝒲₁(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_1D(kernel, u, h_inv)
+
+    """
+        𝒲₂( kernel::SPHKernel, u::Real, h_inv::Real)
+
+    Evaluate 2D spline at position ``u = \\frac{x}{h}``.
+    """
+    𝒲₂( kernel::SPHKernel, u::Real, h_inv::Real) = kernel_value_2D(kernel, u, h_inv)
+
+    """
+        ∇𝒲₂( kernel::SPHKernel, u::Real, h_inv::Real)
+
+    Evaluate 1D derivative at position ``u = \\frac{x}{h}``.
+    """
+    ∇𝒲₂(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_2D(kernel, u, h_inv)
+
+    """
+        𝒲₃( kernel::SPHKernel, u::Real, h_inv::Real)
+
+    Evaluate 3D spline at position ``u = \\frac{x}{h}``.
+    """
+    𝒲₃( kernel::SPHKernel, u::Real, h_inv::Real) = kernel_value_3D(kernel, u, h_inv)
+    
+    """
+        ∇𝒲₃( kernel::SPHKernel, u::Real, h_inv::Real)
+
+    Evaluate 1D derivative at position ``u = \\frac{x}{h}``.
+    """
+    ∇𝒲₃(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_3D(kernel, u, h_inv)
+
+    """ 
+        δρ₁(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
+
+    Corrects the 1D density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
+    """
+    δρ₁(kernel::SPHKernel, density::Real, m::Real, h_inv::Real) = bias_correction_1D(kernel, density, m, h_inv)
+
+    """ 
+        δρ₂(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
+
+    Corrects the 2D density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
+    """
+    δρ₂(kernel::SPHKernel, density::Real, m::Real, h_inv::Real) = bias_correction_2D(kernel, density, m, h_inv)
+
+    """ 
+        δρ₃(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
+
+    Corrects the 3D density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
+    """
+    δρ₃(kernel::SPHKernel, density::Real, m::Real, h_inv::Real) = bias_correction_3D(kernel, density, m, h_inv)
+    
 end # module
