@@ -32,7 +32,7 @@ kernel_value_1D(k::SPHKernel, u::Real, h_inv::Real)
 and a 2D kernel
 
 ```julia
-kernel_value_1D(k::SPHKernel, u::Real, h_inv::Real)
+kernel_value_2D(k::SPHKernel, u::Real, h_inv::Real)
 ```
 
 If you want your code to look a little more fancy you can also use the alternative functions [𝒲₁](@ref), where the respective subscript refers to the dimension:
