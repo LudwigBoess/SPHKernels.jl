@@ -45,7 +45,7 @@ Evaluate the derivative of the WendlandC2 spline at position ``u = \\frac{x}{h}`
     @fastmath if u < 1.0
         n = kernel.norm_1D * h_inv^2
         t1 = 1.0 - u
-        return ( -12.0 * u * t  ) * n
+        return ( -12.0 * u * t1  ) * n
     else
         return 0.
     end
@@ -58,7 +58,9 @@ end
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
 @inline function bias_correction_1D(kernel::WendlandC2, density::Real, m::Real, h_inv::Real)
-    return density
+    @fastmath n = kernel.norm_1D * h_inv^3
+    @fastmath wc_correction = 0.0294 * ( kernel.n_neighbours * 0.01 )^(-0.977) * m * n
+    return density - wc_correction
 end
 
 """
@@ -71,7 +73,7 @@ Evaluate WendlandC2 spline at position ``u = \\frac{x}{h}``.
     @fastmath if u < 1.0
         n = kernel.norm_2D * h_inv^2
         t1 = 1.0 - u
-        t4 = t * t * t * t
+        t4 = t1 * t1 * t1 * t1
         return ( t4 * ( 1.0 + 4u ) ) * n
     else
         return 0.
@@ -103,7 +105,9 @@ end
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
 @inline function bias_correction_2D(kernel::WendlandC2, density::Real, m::Real, h_inv::Real)
-    return density 
+    @fastmath n = kernel.norm_2D * h_inv^3
+    @fastmath wc_correction = 0.0294 * ( kernel.n_neighbours * 0.01 )^(-0.977) * m * n
+    return density - wc_correction
 end
 
 
@@ -115,9 +119,9 @@ Evaluate WendlandC2 spline at position ``u = \\frac{x}{h}``.
 @inline function kernel_value_3D(kernel::WendlandC2, u::Real, h_inv::Real)
 
     @fastmath if u < 1.0
-        n = kernel.norm_2D * h_inv^3
+        n = kernel.norm_3D * h_inv^3
         t1 = 1.0 - u
-        t4 = t * t * t * t
+        t4 = t1 * t1 * t1 * t1
         return ( t4 * ( 1.0 + 4u ) ) * n
     else
         return 0.
@@ -133,7 +137,7 @@ Evaluate the derivative of the WendlandC2 spline at position ``u = \\frac{x}{h}`
 @inline function kernel_deriv_3D(kernel::WendlandC2, u::Real, h_inv::Real)
 
     @fastmath if u < 1.0
-        n = kernel.norm_2D * h_inv^4
+        n = kernel.norm_3D * h_inv^4
         t1 = 1.0 - u
         t3 = t1 * t1 * t1
         return ( -20.0 * u * t3 ) * n
@@ -144,14 +148,14 @@ Evaluate the derivative of the WendlandC2 spline at position ``u = \\frac{x}{h}`
 end
 
 """ 
-    bias_correction_3D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+    bias_correction_3D(kernel::WendlandC2, density::Real, m::Real, h_inv::Real)
 
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
-@inline function bias_correction_3D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
+@inline function bias_correction_3D(kernel::WendlandC2, density::Real, m::Real, h_inv::Real)
 
     @fastmath n = kernel.norm_3D * h_inv^3
-    @fastmath wc_correction = 0.0294 * ( kernel.n_neighbours * 0.01 )^(-1.977) * m * n
+    @fastmath wc_correction = 0.0294 * ( kernel.n_neighbours * 0.01 )^(-0.977) * m * n
     return density - wc_correction
 end
 
@@ -216,7 +220,10 @@ end
 Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
 """
 @inline function bias_correction_1D(kernel::WendlandC4, density::Real, m::Real, h_inv::Real)
-    return density
+    @fastmath n = kernel.norm_1D * h_inv^3
+    @fastmath wc_correction = 0.01342 * ( kernel.n_neighbours * 0.01 )^(-1.579) * m * n
+    
+    return density - wc_correction
 end
 
 """
