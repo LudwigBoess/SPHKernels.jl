@@ -515,4 +515,29 @@ using SPHKernels, Test
         end
     end
 
+    @testset "Multiple Dispatch" begin
+
+        @testset "kernel value" begin
+            k = WendlandC6()
+            @test 𝒲₁(k, 0.5, 1.0) ≈ kernel_value_1D(k, 0.5, 1.0)
+            @test 𝒲₂(k, 0.5, 1.0) ≈ kernel_value_2D(k, 0.5, 1.0)
+            @test 𝒲₃(k, 0.5, 1.0) ≈ kernel_value_3D(k, 0.5, 1.0)
+        end
+
+        @testset "kernel derivative" begin
+            k = WendlandC6()
+            @test ∇𝒲₁(k, 0.5, 1.0) ≈ kernel_deriv_1D(k, 0.5, 1.0)
+            @test ∇𝒲₂(k, 0.5, 1.0) ≈ kernel_deriv_2D(k, 0.5, 1.0)
+            @test ∇𝒲₃(k, 0.5, 1.0) ≈ kernel_deriv_3D(k, 0.5, 1.0)
+        end
+
+        @testset "bias correction" begin
+            k = WendlandC6()
+            @test δρ₁(k, 1.0, 1.0, 0.5) ≈ bias_correction_1D(k, 1.0, 1.0, 0.5)
+            @test δρ₂(k, 1.0, 1.0, 0.5) ≈ bias_correction_2D(k, 1.0, 1.0, 0.5)
+            @test δρ₃(k, 1.0, 1.0, 0.5) ≈ bias_correction_3D(k, 1.0, 1.0, 0.5)
+        end
+        
+    end
+
 end
