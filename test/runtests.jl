@@ -30,6 +30,12 @@ using SPHKernels, Test
             @test d == 0.0
         end
 
+        @testset "1D bias correction" begin
+            k = Cubic()
+            d = bias_correction_1D(k, 1.0, 0.0, 0.0)
+            @test d ≈  1.0  
+        end
+
         @testset "2D value" begin
             k = Cubic()
             # < 0.5
@@ -127,6 +133,12 @@ using SPHKernels, Test
             # > 1.0
             d = kernel_deriv_1D(k, 1.5, 0.5)
             @test d == 0.0
+        end
+
+        @testset "1D bias correction" begin
+            k = Quintic()
+            d = bias_correction_1D(k, 1.0, 0.0, 0.0)
+            @test d ≈  1.0  
         end
 
         @testset "2D value" begin
