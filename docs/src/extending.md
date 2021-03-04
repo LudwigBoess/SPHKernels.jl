@@ -13,10 +13,11 @@ If you need a different kernel function than the ones I implemented you can add 
 using SPHKernels # hide
 struct MyKernel <: SPHKernel
     n_neighbours::Int64
+    norm_1D::Float64
     norm_2D::Float64
     norm_3D::Float64
     function MyKernel(n_neighbours::Int64=1000)
-        new(n_neighbours, 1.0, 1.0)
+        new(n_neighbours, 1.0, 1.0, 1.0)
     end
 end
 ```
