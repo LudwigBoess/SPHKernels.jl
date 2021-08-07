@@ -29,8 +29,12 @@ module SPHKernels
     """
     abstract type SPHKernel end
 
-    include("bsplines.jl")
-    include("wendland.jl")
+    include("bsplines/Cubic.jl")
+    include("bsplines/Quintic.jl")
+    include("wendland/C2.jl")
+    include("wendland/C4.jl")
+    include("wendland/C6.jl")
+    include("wendland/C8.jl")
 
     # multiple dispatch for nicer look
 
