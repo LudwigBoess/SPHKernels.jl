@@ -486,7 +486,7 @@ using SPHKernels, Test
             k = WendlandC8()
             # < 1.0
             d = kernel_deriv_2D(k, 0.5, 0.5)
-            @test d ≈ -0.5179270722948169
+            @test d ≈ -0.25896353614740847
             # > 1.0
             d = kernel_deriv_2D(k, 1.5, 0.5)
             @test d == 0.0
@@ -503,7 +503,7 @@ using SPHKernels, Test
             k = WendlandC8()
             # < 1.0
             d = kernel_value_3D(k, 0.5, 0.5)
-            @test d ≈ 0.034310013366734275
+            @test d ≈ 0.017155006683367138
             # > 1.0
             d = kernel_value_3D(k, 1.5, 0.5)
             @test d == 0.0
@@ -513,7 +513,7 @@ using SPHKernels, Test
             k = WendlandC8()
             # < 1.0
             d = kernel_deriv_3D(k, 0.5, 0.5)
-            @test d ≈ -0.5179270722948169
+            @test d ≈ -0.12948176807370423
             # > 1.0
             d = kernel_deriv_3D(k, 1.5, 0.5)
             @test d == 0.0
