@@ -70,7 +70,7 @@ end
 
 
 """
-    (kernel::WendlandC6{T}, u::Real, h_inv::Real) where T
+    kernel_value_2D(kernel::WendlandC6{T}, u::Real, h_inv::Real) where T
 
 Evaluate WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """

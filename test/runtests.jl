@@ -538,9 +538,9 @@ using SPHKernels, Test
 
         @testset "kernel derivative" begin
             k = WendlandC6()
-            @test ∇𝒲₁(k, 0.5, 1.0) ≈ kernel_deriv_1D(k, 0.5, 1.0)
-            @test ∇𝒲₂(k, 0.5, 1.0) ≈ kernel_deriv_2D(k, 0.5, 1.0)
-            @test ∇𝒲₃(k, 0.5, 1.0) ≈ kernel_deriv_3D(k, 0.5, 1.0)
+            @test d𝒲₁(k, 0.5, 1.0) ≈ kernel_deriv_1D(k, 0.5, 1.0)
+            @test d𝒲₂(k, 0.5, 1.0) ≈ kernel_deriv_2D(k, 0.5, 1.0)
+            @test d𝒲₃(k, 0.5, 1.0) ≈ kernel_deriv_3D(k, 0.5, 1.0)
         end
 
         @testset "bias correction" begin

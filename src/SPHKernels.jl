@@ -7,9 +7,9 @@ module SPHKernels
     export  kernel_value_1D,     𝒲₁,
             kernel_value_2D,     𝒲₂,
             kernel_value_3D,     𝒲₃,
-            kernel_deriv_1D,    ∇𝒲₁,
-            kernel_deriv_2D,    ∇𝒲₂,
-            kernel_deriv_3D,    ∇𝒲₃,
+            kernel_deriv_1D,    d𝒲₁,
+            kernel_deriv_2D,    d𝒲₂,
+            kernel_deriv_3D,    d𝒲₃,
             bias_correction_1D, δρ₁,
             bias_correction_2D, δρ₂,
             bias_correction_3D, δρ₃,
@@ -46,11 +46,11 @@ module SPHKernels
     𝒲₁( kernel::SPHKernel, u::Real, h_inv::Real) = kernel_value_1D(kernel, u, h_inv)
     
     """
-        ∇𝒲₁( kernel::SPHKernel, u::Real, h_inv::Real)
+        d𝒲₁( kernel::SPHKernel, u::Real, h_inv::Real)
 
     Evaluate 1D derivative at position ``u = \\frac{x}{h}``.
     """
-    ∇𝒲₁(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_1D(kernel, u, h_inv)
+    d𝒲₁(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_1D(kernel, u, h_inv)
 
     """
         𝒲₂( kernel::SPHKernel, u::Real, h_inv::Real)
@@ -60,11 +60,11 @@ module SPHKernels
     𝒲₂( kernel::SPHKernel, u::Real, h_inv::Real) = kernel_value_2D(kernel, u, h_inv)
 
     """
-        ∇𝒲₂( kernel::SPHKernel, u::Real, h_inv::Real)
+        d𝒲₂( kernel::SPHKernel, u::Real, h_inv::Real)
 
     Evaluate 1D derivative at position ``u = \\frac{x}{h}``.
     """
-    ∇𝒲₂(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_2D(kernel, u, h_inv)
+    d𝒲₂(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_2D(kernel, u, h_inv)
 
     """
         𝒲₃( kernel::SPHKernel, u::Real, h_inv::Real)
@@ -74,11 +74,11 @@ module SPHKernels
     𝒲₃( kernel::SPHKernel, u::Real, h_inv::Real) = kernel_value_3D(kernel, u, h_inv)
     
     """
-        ∇𝒲₃( kernel::SPHKernel, u::Real, h_inv::Real)
+        d𝒲₃( kernel::SPHKernel, u::Real, h_inv::Real)
 
     Evaluate 1D derivative at position ``u = \\frac{x}{h}``.
     """
-    ∇𝒲₃(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_3D(kernel, u, h_inv)
+    d𝒲₃(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_3D(kernel, u, h_inv)
 
     """ 
         δρ₁(kernel::SPHKernel, density::Real, m::Real, h_inv::Real)
