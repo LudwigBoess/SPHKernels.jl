@@ -11,35 +11,39 @@ If you need a different kernel function than the ones I implemented you can add 
 
 ```@example 1
 using SPHKernels # hide
-struct MyKernel <: SPHKernel
+struct MyKernel{T} <: SPHKernel
     n_neighbours::Int64
-    norm_1D::Float64
-    norm_2D::Float64
-    norm_3D::Float64
-    function MyKernel(n_neighbours::Int64=1000)
-        new(n_neighbours, 1.0, 1.0, 1.0)
-    end
+    norm_1D::T
+    norm_2D::T
+    norm_3D::T
 end
+
+"""
+    MyKernel(T::DataType=Float64, n_neighbours::Integer=295)
+
+Set up a `MyKernel` kernel for a given DataType `T`.
+"""
+MyKernel(T::DataType=Float64, n_neighbours::Integer=1000) = MyKernel{T}(n_neighbours, T(1), T(1), T(1))
 ```
 
 and defining its value and derivative in 2D and 3D, e.g.
 
 ```@example 1
-@inline function kernel_value_2D(kernel::MyKernel, u::Float64, h_inv::Float64)
+function kernel_value_2D(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
 
-    if u < 1.0
+    if u < 1
         n = kernel.norm_2D * h_inv^2
-        return 1.0 * n
+        return 1.0 * n |> T
     else
-        return 0.0
+        return 0.0 |> T
     end
 
 end
 ```
 
 ```@example 1
-@inline function kernel_deriv_2D(kernel::MyKernel, u::Float64, h_inv::Float64)
-    return 0.0
+@inline function kernel_deriv_2D(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
+    return 0.0 |> T
 end
 ```
 
