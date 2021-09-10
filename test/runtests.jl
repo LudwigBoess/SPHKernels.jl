@@ -99,6 +99,10 @@ using SPHKernels, Test
             d = bias_correction(k, 1.0, 0.0, 0.0, 64)
             @test d ≈  1.0  
         end
+
+        @testset "Dimension Error" begin 
+            @test_throws ErrorException("Cubic not defined for 4 dimensions!") Cubic(4)
+        end
     end
     
     @testset "Quintic Spline" begin
@@ -216,6 +220,10 @@ using SPHKernels, Test
             d = bias_correction(k, 1.0, 0.0, 0.0, 64)
             @test d ≈  1.0  
         end
+
+        @testset "Dimension Error" begin 
+            @test_throws ErrorException("Quintic not defined for 4 dimensions!") Quintic(4)
+        end
     end
 
     @testset "Wendland C2" begin
@@ -299,6 +307,10 @@ using SPHKernels, Test
             d = bias_correction(k, 1.0, 1.0, 0.5, 128)
 
             @test d ≈ 0.9903494374610865
+        end
+
+        @testset "Dimension Error" begin 
+            @test_throws ErrorException("WendlandC2 not defined for 4 dimensions!") WendlandC2(4)
         end
     end
 
@@ -384,6 +396,10 @@ using SPHKernels, Test
 
             @test d ≈ 0.9944065039634155
         end
+
+        @testset "Dimension Error" begin 
+            @test_throws ErrorException("WendlandC4 not defined for 4 dimensions!") WendlandC4(4)
+        end
     end
 
     @testset "Wendland C6" begin
@@ -468,6 +484,10 @@ using SPHKernels, Test
 
             @test d ≈ 0.9943317458482153
         end
+
+        @testset "Dimension Error" begin 
+            @test_throws ErrorException("WendlandC6 not defined for 4 dimensions!") WendlandC6(4)
+        end
     end
 
     @testset "Wendland C8" begin
@@ -524,6 +544,11 @@ using SPHKernels, Test
             d = bias_correction(k, 1.0, 1.0, 0.5, 128)
 
             @test d ≈ 1.0
+        end
+
+        @testset "Dimension Error" begin 
+            @test_throws ErrorException("WendlandC8 not defined for 1 dimensions!") WendlandC8(1)
+            @test_throws ErrorException("WendlandC8 not defined for 4 dimensions!") WendlandC8(4)
         end
     end
 
