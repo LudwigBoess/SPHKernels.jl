@@ -10,6 +10,9 @@ module SPHKernels
             kernel_deriv_1D,    d𝒲₁,
             kernel_deriv_2D,    d𝒲₂,
             kernel_deriv_3D,    d𝒲₃,
+            kernel_gradient_1D, ∇𝒲₁,
+            kernel_gradient_2D, ∇𝒲₂,
+            kernel_gradient_3D, ∇𝒲₃,
             bias_correction_1D, δρ₁,
             bias_correction_2D, δρ₂,
             bias_correction_3D, δρ₃,
@@ -35,6 +38,7 @@ module SPHKernels
     include("wendland/C4.jl")
     include("wendland/C6.jl")
     include("wendland/C8.jl")
+    include("sph_functions/gradients.jl")
 
     # multiple dispatch for nicer look
 
@@ -100,5 +104,7 @@ module SPHKernels
     Corrects the 3D density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
     """
     δρ₃(kernel::SPHKernel, density::Real, m::Real, h_inv::Real) = bias_correction_3D(kernel, density, m, h_inv)
+
+    
     
 end # module

@@ -71,9 +71,9 @@ kernel_deriv_3D(k::SPHKernel, u::Real, h_inv::Real)
 or in the fancy way:
 
 ```julia
-∇𝒲₁(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_1D(kernel, u, h_inv)
-∇𝒲₂(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_2D(kernel, u, h_inv)
-∇𝒲₃(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_3D(kernel, u, h_inv)
+d𝒲₁(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_1D(kernel, u, h_inv)
+d𝒲₂(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_2D(kernel, u, h_inv)
+d𝒲₃(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv_3D(kernel, u, h_inv)
 
 ```
 
