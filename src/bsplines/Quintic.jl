@@ -1,4 +1,4 @@
-struct Quintic{T} <: SPHKernel
+struct Quintic{T} <: AbstractSPHKernel
     dim::Int64
     norm::T
 end

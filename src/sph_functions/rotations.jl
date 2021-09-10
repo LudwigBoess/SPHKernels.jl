@@ -1,5 +1,5 @@
 
-function kernel_rotation(k::SPHKernel, h_inv::Real, 
+function kernel_rotation(k::AbstractSPHKernel, h_inv::Real, 
                          part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real},
                          part_Q::Vector{<:Real}, neighbour_Q::Vector{<:Real})
 
@@ -23,7 +23,7 @@ function kernel_rotation(k::SPHKernel, h_inv::Real,
 end
 
 
-∇xQ( k::SPHKernel, h_inv::Real, 
+∇xQ( k::AbstractSPHKernel, h_inv::Real, 
       part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real},
       part_Q::Vector{<:Real}, neighbour_Q::Vector{<:Real} ) = kernel_rotation( k, h_inv, 
                                                                                part_pos, neighbour_pos, 

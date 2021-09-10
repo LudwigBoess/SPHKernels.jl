@@ -1,9 +1,9 @@
-struct WendlandC4{T} <: SPHKernel
+struct WendlandC4{T} <: AbstractSPHKernel
     dim::Int64
     norm::T
 end
 
-struct WendlandC4_1D{T} <: SPHKernel
+struct WendlandC4_1D{T} <: AbstractSPHKernel
     dim::Int64
     norm::T
 end

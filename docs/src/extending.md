@@ -7,11 +7,11 @@ DocTestSetup = quote
 end
 ```
 
-If you need a different kernel function than the ones I implemented you can add them by defining a new kernel `struct` as a subtype of [SPHKernel](@ref)
+If you need a different kernel function than the ones I implemented you can add them by defining a new kernel `struct` as a subtype of [AbstractSPHKernel](@ref)
 
 ```@example 1
 using SPHKernels # hide
-struct MyKernel{T} <: SPHKernel
+struct MyKernel{T} <: AbstractSPHKernel
     dim::Int64
     norm::T
 end

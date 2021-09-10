@@ -15,22 +15,22 @@ In this implementation we follow the convention of Dehnen&Aly in using the 'comp
 To evaluate a 3D kernel you need to use the function
 
 ```julia
-kernel_value(k::SPHKernel, u::Real, h_inv::Real)
+kernel_value(k::AbstractSPHKernel, u::Real, h_inv::Real)
 ```
 
-where [SPHKernel](@ref) is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the compact kernel support and `h_inv` is the inverse of the compact kernel support.
+where [AbstractSPHKernel](@ref) is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the compact kernel support and `h_inv` is the inverse of the compact kernel support.
 
 The same goes for a 1D kernel
 
 ```julia
-kernel_value(k::SPHKernel, u::Real, h_inv::Real)
+kernel_value(k::AbstractSPHKernel, u::Real, h_inv::Real)
 ```
 
 
 If you want your code to look a little more fancy you can also use the alternative functions [𝒲₁](@ref), where the respective subscript refers to the dimension:
 
 ```julia
-𝒲( kernel::SPHKernel, u::Real, h_inv::Real) = kernel_value(kernel, u, h_inv)
+𝒲( kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_value(kernel, u, h_inv)
 ```
 
 As an example:
@@ -55,13 +55,13 @@ val = 𝒲(k, u, h_inv)
 Similar to [Evaluating Kernels](@ref) you can evluate a kernel derivative with
 
 ```julia
-kernel_deriv(k::SPHKernel, u::Real, h_inv::Real)
+kernel_deriv(k::AbstractSPHKernel, u::Real, h_inv::Real)
 ```
 
 or in the fancy way:
 
 ```julia
-d𝒲(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv(kernel, u, h_inv)
+d𝒲(kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_deriv(kernel, u, h_inv)
 ```
 
 ## Bias Correction
@@ -69,13 +69,13 @@ d𝒲(kernel::SPHKernel, u::Real, h_inv::Real) = kernel_deriv(kernel, u, h_inv)
 You can correct for the kernel bias of the Wendland kernels as described in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211), Eq. 18 + 19 with the functions:
 
 ```julia
-bias_correction(kernel::SPHKernel, density::Real, m::Real, h_inv::Real, n_neighbours::Integer)
+bias_correction(kernel::AbstractSPHKernel, density::Real, m::Real, h_inv::Real, n_neighbours::Integer)
 ```
 
 or again in the fancy way
 
 ```julia
-δρ(kernel::SPHKernel, density::Real, m::Real, h_inv::Real, n_neighbours::Integer) = bias_correction(kernel, density, m, h_inv, n_neighbours)
+δρ(kernel::AbstractSPHKernel, density::Real, m::Real, h_inv::Real, n_neighbours::Integer) = bias_correction(kernel, density, m, h_inv, n_neighbours)
 
 ```
 

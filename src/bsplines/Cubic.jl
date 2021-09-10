@@ -1,4 +1,4 @@
-struct Cubic{T} <: SPHKernel
+struct Cubic{T} <: AbstractSPHKernel
     dim::Int64
     norm::T
 end

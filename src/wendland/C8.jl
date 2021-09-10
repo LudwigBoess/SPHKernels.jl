@@ -1,4 +1,4 @@
-struct WendlandC8{T} <: SPHKernel
+struct WendlandC8{T} <: AbstractSPHKernel
     dim::Int64
     norm::T
 end

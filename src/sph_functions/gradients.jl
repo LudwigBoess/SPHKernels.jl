@@ -1,11 +1,11 @@
 """
-    kernel_grad_1D(k::SPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
+    kernel_grad_1D(k::AbstractSPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
 
 Computes the 1D gradient of the kernel `k` at the position of the neighbour `neighbour_pos`. 
 
 ``∇𝒲(x_i) = \\frac{d𝒲}{dx}\\vert_{x_j} \\frac{Δx_{ij}}{||x_{ij}||} \\frac{1}{h_i}``
 """
-function kernel_grad_1D(k::SPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
+function kernel_grad_1D(k::AbstractSPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
 
     x_diff = part_pos - neighbour_pos
 
@@ -16,29 +16,29 @@ function kernel_grad_1D(k::SPHKernel, h_inv::Real, part_pos::Real, neighbour_pos
 end
 
 """ 
-    ∇𝒲₁(k::SPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
+    ∇𝒲₁(k::AbstractSPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
 
 Multiple dispatch version of [`kernel_grad_1D`](@ref).
 """
-∇𝒲₁(k::SPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real) = kernel_grad_1D(k, h_inv, part_pos, neighbour_pos)
+∇𝒲₁(k::AbstractSPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real) = kernel_grad_1D(k, h_inv, part_pos, neighbour_pos)
 
 """ 
-    ∇𝒲₁(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
+    ∇𝒲₁(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
 
 Multiple dispatch version of [`kernel_grad_1D`](@ref).
 """
-∇𝒲₁(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real}) = kernel_grad_1D(k, h_inv, part_pos[1], neighbour_pos[1])
+∇𝒲₁(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real}) = kernel_grad_1D(k, h_inv, part_pos[1], neighbour_pos[1])
 
 
 
 """
-    kernel_grad_2D(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
+    kernel_grad_2D(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
 
 Computes the 2D gradient of the kernel `k` at the position of the neighbour `neighbour_pos`. 
 
 ``∇𝒲(x_i) = \\frac{d𝒲}{dx}\\vert_{x_j} \\frac{Δx_{ij}}{||x_{ij}||} \\frac{1}{h_i}``
 """
-function kernel_grad_2D(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
+function kernel_grad_2D(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
 
     x_diff = part_pos[1] - neighbour_pos[1]
     y_diff = part_pos[2] - neighbour_pos[2]
@@ -54,21 +54,21 @@ function kernel_grad_2D(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, nei
 end
 
 """ 
-    ∇𝒲₂(k::SPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
+    ∇𝒲₂(k::AbstractSPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
 
 Multiple dispatch version of [`kernel_grad_2D`](@ref).
 """
-∇𝒲₂(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real}) = kernel_grad_2D(k, h_inv, part_pos, neighbour_pos)
+∇𝒲₂(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real}) = kernel_grad_2D(k, h_inv, part_pos, neighbour_pos)
 
 
 """
-    kernel_grad_3D(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
+    kernel_grad_3D(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
 
 Computes the 3D gradient of the kernel `k` at the position of the neighbour `neighbour_pos`. 
 
 ``∇𝒲(x_i) = \\frac{d𝒲}{dx}\\vert_{x_j} \\frac{Δx_{ij}}{||x_{ij}||} \\frac{1}{h_i}``
 """
-function kernel_grad_3D(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
+function kernel_grad_3D(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real})
 
     x_diff = part_pos[1] - neighbour_pos[1]
     y_diff = part_pos[2] - neighbour_pos[2]
@@ -87,9 +87,9 @@ end
 
 
 """ 
-    ∇𝒲₃(k::SPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
+    ∇𝒲₃(k::AbstractSPHKernel, h_inv::Real, part_pos::Real, neighbour_pos::Real)
 
 Multiple dispatch version of [`kernel_grad_3D`](@ref).
 """
-∇𝒲₃(k::SPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real}) = kernel_grad_3D(k, h_inv, part_pos, neighbour_pos)
+∇𝒲₃(k::AbstractSPHKernel, h_inv::Real, part_pos::Vector{<:Real}, neighbour_pos::Vector{<:Real}) = kernel_grad_3D(k, h_inv, part_pos, neighbour_pos)
 
