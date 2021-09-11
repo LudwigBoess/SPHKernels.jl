@@ -7,32 +7,38 @@ DocTestSetup = quote
 end
 ```
 
-If you need a different kernel function than the ones I implemented you can add them by defining a new kernel `struct` as a subtype of [SPHKernel](@ref)
+If you need a different kernel function than the ones I implemented you can add them by defining a new kernel `struct` as a subtype of [AbstractSPHKernel](@ref)
 
 ```@example 1
 using SPHKernels # hide
-struct MyKernel{T} <: SPHKernel
-    n_neighbours::Int64
-    norm_1D::T
-    norm_2D::T
-    norm_3D::T
+struct MyKernel{T} <: AbstractSPHKernel
+    dim::Int64
+    norm::T
 end
 
 """
-    MyKernel(T::DataType=Float64, n_neighbours::Integer=295)
+    MyKernel(T::DataType=Float64, dim::Integer=3)
 
 Set up a `MyKernel` kernel for a given DataType `T`.
 """
-MyKernel(T::DataType=Float64, n_neighbours::Integer=1000) = MyKernel{T}(n_neighbours, T(1), T(1), T(1))
+MyKernel(T::DataType=Float64, dim::Integer=3) = MyKernel{T}(dim, T(1))
+
+
+"""
+    MyKernel(dim::Integer)
+
+Define `MyKernel` kernel with dimension `dim` for the native `DataType` of the OS.
+"""
+MyKernel(dim::Integer) = MyKernel{T}(typeof(1.0), dim)
 ```
 
-and defining its value and derivative in 2D and 3D, e.g.
+and defining its value and derivative, e.g.
 
 ```@example 1
-function kernel_value_2D(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
+function kernel_value(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
 
     if u < 1
-        n = kernel.norm_2D * h_inv^2
+        n = kernel.norm * h_inv^kernel.dim
         return 1.0 * n |> T
     else
         return 0.0 |> T
@@ -42,7 +48,7 @@ end
 ```
 
 ```@example 1
-@inline function kernel_deriv_2D(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
+@inline function kernel_deriv(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
     return 0.0 |> T
 end
 ```
