@@ -4,9 +4,12 @@
 
 module SPHKernels
 
+    using LinearAlgebra
+
     export  kernel_value,     𝒲,
-            kernel_deriv,    d𝒲,
-            bias_correction, δρ,
+            kernel_deriv,     d𝒲,
+            bias_correction,  δρ,
+            
             AbstractSPHKernel,
             Cubic, 
             Quintic,
@@ -29,6 +32,12 @@ module SPHKernels
     include("wendland/C4.jl")
     include("wendland/C6.jl")
     include("wendland/C8.jl")
+    include("sph_functions/gradient.jl")
+    include("sph_functions/div.jl")
+    include("sph_functions/curl.jl")
+    include("sph_functions/quantity.jl")
+
+
     # multiple dispatch for nicer look
 
     """
