@@ -6,7 +6,6 @@ module SPHKernels
 
     export  kernel_value,     𝒲,
             kernel_deriv,    d𝒲,
-            kernel_gradient, ∇𝒲,
             bias_correction, δρ,
             AbstractSPHKernel,
             Cubic, 
@@ -30,8 +29,6 @@ module SPHKernels
     include("wendland/C4.jl")
     include("wendland/C6.jl")
     include("wendland/C8.jl")
-    include("sph_functions/gradients.jl")
-
     # multiple dispatch for nicer look
 
     """
