@@ -552,11 +552,67 @@ using SPHKernels, Test
         end
     end
 
+    @testset "SPH Functions" begin
+
+        # test quantities setup
+        x_i   = [ 0.0, 0.0, 0.0 ]
+        x_j   = [ 0.5, 0.5, 0.5 ]
+        Δx    =   x_i - x_j
+        A_i   = [ 1.0, 1.0, 1.0 ]
+        A_j   = [ 1.5, 1.5, 1.5 ]
+        m_j   =   1.5
+        ρ_j   =   1.5
+        k     = WendlandC6(3)
+        r     = SPHKernels.get_r(x_i, x_j)
+        h_inv = 1.0
+        u     = r*h_inv
+
+
+        @testset "Quantity" begin
+            # kernel
+            @test 𝒲(k, h_inv, x_i, x_j) ≈ 3.344536443474818e-5
+            @test 𝒲(k, u, h_inv )       ≈ 3.344536443474818e-5
+
+            # quantity
+            @test 𝒜(k, h_inv, x_i, x_j, A_j[1], m_j, ρ_j) ≈ 5.0168046652122274e-5
+            @test 𝒜(k, r, h_inv, A_j[1], m_j, ρ_j)        ≈ 5.0168046652122274e-5
+
+            @test 𝒜(k, r, h_inv, A_j[1], m_j, ρ_j) ≈ A_j[1] * m_j / ρ_j * 𝒲(k, u, h_inv )
+        end
+
+        @testset "Gradient" begin
+            # kernel 
+            @test ∇𝒲(k, h_inv, x_i, x_j) ≈ [0.001102872236812411, 0.001102872236812411, 0.001102872236812411]
+            @test ∇𝒲(k, r, h_inv, Δx)    ≈ [0.001102872236812411, 0.001102872236812411, 0.001102872236812411]
+
+            # quantitiy 
+            @test ∇𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j) ≈ [0.0016543083552186164, 0.0016543083552186164, 0.0016543083552186164]
+            @test ∇𝒜(k, r, h_inv, Δx, A_j, m_j, ρ_j)    ≈ [0.0016543083552186164, 0.0016543083552186164, 0.0016543083552186164]
+
+        end
+
+        @testset "Divergence" begin
+            # kernel 
+            @test ∇̇dot𝒲(k, h_inv, x_i, x_j, A_j)           ≈ 0.004962925065655849
+            # quantity
+            @test ∇dot𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j) ≈ 0.004962925065655849
+        end
+
+        @testset "Curl" begin
+            
+        end
+    end
+
     @testset "Multiple Dispatch" begin
 
         @testset "kernel value" begin
+
             k = WendlandC6()
             @test 𝒲(k, 0.5, 1.0) ≈ kernel_value(k, 0.5, 1.0)
+
+            @test 𝒲(k, 1.0, [0.0, 0.0, 0.0], [0.5, 0.0, 0.0]) ≈ kernel_value(k, 0.5, 1.0)
+
+            @test 𝒲(k, 1.0, 0.0, 0.5) ≈ kernel_value(k, 0.5, 1.0)
         end
 
         @testset "kernel derivative" begin
