@@ -32,44 +32,35 @@ We provide two functionalities
 ### Kernel
 
 You can compute the gradient of the kernel at position `x_j` 
-``∇W(x_{ij}, h_i) = \frac{dW}{dx}\vert_{x_j} \frac{Δx_{ij}}{||x_{ij}||} \frac{1}{h_i}`` 
+``∇W(x_{ij}, h_i) = \frac{dW}{dx}\vert_{x_j} \frac{Δx_{ij}}{||x_{ij}||} \frac{1}{h_i}``
+
 by using
 
-```julia
-kernel_gradient( k::SPHKernel, h_inv::Real, 
-                 xᵢ::Union{Real, Vector{<:Real}}, 
-                 xⱼ::Union{Real, Vector{<:Real}} )
+```@docs
+kernel_gradient
 ```
 
 or its more compact form
 
-```julia
-∇𝒲( k::SPHKernel, h_inv::Real, 
-     xᵢ::Union{Real, Vector{<:Real}}, 
-     xⱼ::Union{Real, Vector{<:Real}} )
+```@docs
+∇𝒲
 ```
+
 where `xᵢ` and `xⱼ` are the positions of particles `i` and `j` in 1D-3D space.
 
 ### Quantity
 
 To compute the gradient of a SPH quantity for particle `i` 
 ``∇\vec{A}_i(x) ≈ - \sum_j m_j \frac{\vec{A}_j}{\rho_j} ∇W(\vec{x}_i - \vec{x}_j, h_i)``
-you can loop over 
 
-```julia
-quantity_gradient( k::AbstractSPHKernel, h_inv::Real, 
-                   xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-                   Aⱼ::Vector{<:Real},
-                   mⱼ::Real,             ρⱼ::Real )
+you can loop over
+
+```@docs
+quantity_gradient
 ```
 
 or its compact form
 
-```julia
-∇𝒜( k::AbstractSPHKernel, h_inv::Real, 
-     xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-     Aⱼ::Vector{<:Real},
-     mⱼ::Real,             ρⱼ::Real )
+```@docs
+∇𝒜
 ```
-
-## Divergence
