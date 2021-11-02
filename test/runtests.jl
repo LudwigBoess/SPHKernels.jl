@@ -599,7 +599,10 @@ using SPHKernels, Test
         end
 
         @testset "Curl" begin
-            
+           # kernel
+           ∇x𝒲(k, h_inv, x_i, x_j, A_j) == [0.0, 0.0, 0.0]
+           # quantity
+           ∇x𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j) == [0.0, 0.0, 0.0]
         end
     end
 
