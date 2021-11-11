@@ -127,13 +127,13 @@ using SPHKernels, Test
             k = Quintic(1)
             # < 1/3
             d = kernel_deriv(k, 0.3, 0.5)
-            @test d ≈ -0.99984375
+            @test d ≈ -0.9998437499999998
             # < 2/3
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -114.345703125
+            @test d ≈ -0.439453125
             # < 1.0
             d = kernel_deriv(k, 0.8, 0.5)
-            @test d ≈ -0.012149999999999987
+            @test d ≈ -0.01214999999999999
             # > 1.0
             d = kernel_deriv(k, 1.5, 0.5)
             @test d == 0.0
@@ -168,7 +168,7 @@ using SPHKernels, Test
             @test d ≈ -0.8389284295663888
             # < 2/3
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -95.94285222098028
+            @test d ≈ -0.36872733367017796
             # < 1.0
             d = kernel_deriv(k, 0.8, 0.5)
             @test d ≈ -0.010194573321313068
@@ -206,7 +206,7 @@ using SPHKernels, Test
             @test d ≈ -0.7160853380941675
             # < 2/3
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -81.89407743147959
+            @test d ≈ -0.31473511695418754
             # < 1.0
             d = kernel_deriv(k, 0.8, 0.5)
             @test d ≈ -0.008701796513549367

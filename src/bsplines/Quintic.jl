@@ -81,7 +81,7 @@ function kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where T
         u_m1  = 1 - u 
         u_m23 = T(2/3) - u
         return ( -5u_m1*u_m1*u_m1*u_m1 + 
-                 30u_m23*u_m23*u_m23*u_m23 - 75 ) * n |> T
+                 30u_m23*u_m23*u_m23*u_m23 ) * n |> T
     elseif u < 1
         u_m1 =  1 - u 
         return -5u_m1*u_m1*u_m1*u_m1 * n |> T
