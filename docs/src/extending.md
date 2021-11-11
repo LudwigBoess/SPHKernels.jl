@@ -60,10 +60,10 @@ k = MyKernel()
 u = 0.5
 h_inv = 1.0
 
-v = kernel_value_2D(k, u, h_inv)
+v = kernel_value(k, u, h_inv)
 println("MyKernel value: $v")
 
-d = kernel_deriv_2D(k, u, h_inv)
+d = kernel_derivk, u, h_inv)
 println("MyKernel derivative: $d")
 ```
 
