@@ -67,7 +67,7 @@ function kernel_deriv(kernel::WendlandC6_1D{T}, u::Real, h_inv::Real) where T
         t1 = 1 - u
         t6 = t1*t1*t1*t1*t1*t1
         u2 = u*u
-        return ( -6t6 * u * (35u2 + 18u + 3 )) * n |> T
+        return ( -6t6 * u * (35u2 + 18u + 1 )) * n |> T
     else
         return 0 |> T
     end
@@ -84,12 +84,12 @@ function kernel_value(kernel::WendlandC6{T}, u::Real, h_inv::Real) where T
 
     if u < 1
         n = kernel.norm * h_inv^kernel.dim
-        u_m1 = 1 - u
-        u_m1 = u_m1 * u_m1  # (1.0 - u)^2
-        u_m1 = u_m1 * u_m1  # (1.0 - u)^4
-        u_m1 = u_m1 * u_m1  # (1.0 - u)^8
+        t1 = 1 - u
+        t1 = t1 * t1  # (1.0 - u)^2
+        t1 = t1 * t1  # (1.0 - u)^4
+        t1 = t1 * t1  # (1.0 - u)^8
         u2 = u*u
-        return ( u_m1 * ( 1 + 8u + 25u2 + 32u2*u )) * n |> T
+        return ( t1 * ( 1 + 8u + 25u2 + 32u2*u )) * n |> T
     else
         return 0 |> T
     end
@@ -106,9 +106,9 @@ function kernel_deriv(kernel::WendlandC6{T}, u::Real, h_inv::Real) where T
 
     if u < 1
         n = kernel.norm * h_inv^kernel.dim * h_inv
-        u_m1 = 1 - u
-        u_m1_7 = u_m1 * u_m1 * u_m1 * u_m1 * u_m1 * u_m1 * u_m1
-        return ( -22u_m1_7 * u * ( 16*u^2 + 7u + 1 )) * n |> T
+        t1 = 1 - u
+        t7 = t1 * t1 * t1 * t1 * t1 * t1 * t1
+        return ( -22t7 * u * ( 16*u^2 + 7u + 1 )) * n |> T
     else
         return 0 |> T 
     end
