@@ -64,7 +64,7 @@ function kernel_deriv(kernel::WendlandC2_1D{T}, u::Real, h_inv::Real) where T
     if u < 1
         n = kernel.norm * h_inv^2
         t1 = 1 - u
-        return ( -12u * t1  ) * n |> T
+        return ( -12u * t1^2  ) * n |> T
     else
         return 0 |> T
     end
