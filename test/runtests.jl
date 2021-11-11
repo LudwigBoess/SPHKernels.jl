@@ -242,7 +242,7 @@ using SPHKernels, Test
             k = WendlandC2(1)
             # < 1.0
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -0.9375
+            @test d ≈ -0.46875
             # > 1.0
             d = kernel_deriv(k, 1.5, 0.5)
             @test d == 0.0
@@ -418,7 +418,7 @@ using SPHKernels, Test
             k = WendlandC6(1)
             # < 1.0
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -0.417938232421875
+            @test d ≈ -0.377655029296875
             # > 1.0
             d = kernel_deriv(k, 1.5, 0.5)
             @test d == 0.0
@@ -492,6 +492,33 @@ using SPHKernels, Test
 
     @testset "Wendland C8" begin
 
+        @testset "1D value" begin
+            k = WendlandC8(1)
+            # < 1.0
+            d = kernel_value(k, 0.5, 0.5)
+            @test d ≈ 0.24924344794694767
+            # > 1.0
+            d = kernel_value(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "1D derivative" begin
+            k = WendlandC8(1)
+            # < 1.0
+            d = kernel_deriv(k, 0.5, 0.5)
+            @test d ≈ -0.4727527707122093
+            # > 1.0
+            d = kernel_deriv(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "1D bias correction" begin
+            k = WendlandC8(1)
+            d = bias_correction(k, 1.0, 1.0, 0.5, 128)
+
+            @test d ≈ 1.0
+        end
+
         @testset "2D value" begin
             k = WendlandC8(2)
             # < 1.0
@@ -547,7 +574,6 @@ using SPHKernels, Test
         end
 
         @testset "Dimension Error" begin 
-            @test_throws ErrorException("WendlandC8 not defined for 1 dimensions!") WendlandC8(1)
             @test_throws ErrorException("WendlandC8 not defined for 4 dimensions!") WendlandC8(4)
         end
     end
