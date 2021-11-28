@@ -16,6 +16,7 @@ Set up a `WendlandC8` kernel for a given DataType `T`.
 function WendlandC8(T::DataType=Float64, dim::Integer=3)
 
     if dim == 1
+        @warn "WendlandC8 in 1D has a bug that needs to be fixed!"
         return WendlandC8_1D{T}(1, 35/86)
     elseif dim == 2
         norm = T(8/3π)
