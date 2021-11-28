@@ -25,7 +25,7 @@ The other to directly calculate the contribution of particle `j` to the gradient
 
 You can compute the contribution of particle `j` to the SPH quantity `A` for particle `i` via (see e.g. Price 2012):
 
-``\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} W(\\vec{x}_i - \\vec{x}_j, h_i)``
+``\vec{A}_i(x) ≈ \sum_j m_j \frac{\vec{A}_j}{\rho_j} W(\vec{x}_i - \vec{x}_j, h_i)``
 
 To do this you can loop over the function
 
@@ -87,7 +87,7 @@ or its compact form
 
 The divergence of a quantity in SPH can be calculated as (see e.g. Price 2012):
 
-``∇\\cdot\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} \\cdot ∇W(\\vec{x}_i - \\vec{x}_j, h_i)``
+``∇\cdot\vec{A}_i(x) ≈ \sum_j m_j \frac{\vec{A}_j}{\rho_j} \cdot ∇W(\vec{x}_i - \vec{x}_j, h_i)``
 
 We provide two functionalities 
 
@@ -125,7 +125,7 @@ or its compact form
 
 The curl of a quantity in SPH can be calculated as (see e.g. Price 2012):
 
-``∇×\\vec{A}_i(x) ≈ - \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} \\times ∇W(\\vec{x}_i - \\vec{x}_j, h_i)``
+``∇×\vec{A}_i(x) ≈ - \sum_j m_j \frac{\vec{A}_j}{\rho_j} \times ∇W(\vec{x}_i - \vec{x}_j, h_i)``
 
 We provide two functionalities 
 

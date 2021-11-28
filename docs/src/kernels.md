@@ -15,6 +15,7 @@ In this implementation we follow the convention of Dehnen&Aly in using the 'comp
 
 ```@eval 
 using CairoMakie
+import ColorSchemes
 
 function get_kernel_values(x, k)            
 
