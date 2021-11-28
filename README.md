@@ -11,9 +11,8 @@ These kernels include the B-splines (`Cubic` and `Quintic`) suggested in [Monagh
 In this implementation we follow the convention of Dehnen&Aly in using the 'compact kernel support' as a means to define the maximum extent of the kernel. They denote this ``H`` in their paper, for convenience (aka for not having to type caps) we use `h` in the code.
 
 
-!!! warning
-    The version numbering of this package is unfortunately not really reflective of the state. I made an error on the original setup of the repository, so I had to start out with version 1.0. View this more as v0.2, instead of v2.0!
-    Please sanity-check everything before you use it in production!
+> :warning: **The version numbering of this package is unfortunately not really reflective of the state. I made an error on the original setup of the repository, so I had to start out with version 1.0. View this more as v0.2, instead of v2.0!**: Please sanity-check everything before you use it in production!
+     
 
 ## Evaluating Kernels
 
