@@ -14,6 +14,7 @@ These kernels include the B-splines ([Cubic](@ref) and [Quintic](@ref)) suggeste
 In this implementation we follow the convention of Dehnen&Aly in using the 'compact kernel support' as a means to define the maximum extent of the kernel. They denote this ``H`` in their paper, for convenience (aka for not having to type caps) we use `h` in the code.
 
 ```@eval 
+using SPHKernels
 using CairoMakie
 import ColorSchemes
 
