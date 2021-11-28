@@ -192,7 +192,7 @@ density = 1.0
 kernel  = WendlandC6(3)
 
 # correct density
-density = bias_correction_3D(kernel, density, 1.0, 0.5, 295)
+density = bias_correction(kernel, density, 1.0, 0.5, 295)
 
 println("density = $density")
 ```
