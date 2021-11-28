@@ -10,6 +10,11 @@ These kernels include the B-splines (`Cubic` and `Quintic`) suggested in [Monagh
 
 In this implementation we follow the convention of Dehnen&Aly in using the 'compact kernel support' as a means to define the maximum extent of the kernel. They denote this ``H`` in their paper, for convenience (aka for not having to type caps) we use `h` in the code.
 
+
+!!! warning
+    The version numbering of this package is unfortunately not really reflective of the state. I made an error on the original setup of the repository, so I had to start out with version 1.0. View this more as v0.2, instead of v2.0!
+    Please sanity-check everything before you use it in production!
+
 ## Evaluating Kernels
 
 To evaluate a 3D kernel you need to use the function
@@ -19,13 +24,6 @@ kernel_value(k::AbstractSPHKernel, u::Real, h_inv::Real)
 ```
 
 where `AbstractSPHKernel` is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the compact kernel support and `h_inv` is the inverse of the compact kernel support.
-
-The same goes for a 1D kernel
-
-```julia
-kernel_value(k::AbstractSPHKernel, u::Real, h_inv::Real)
-```
-
 
 If you want your code to look a little more fancy you can also use the alternative functions `𝒲`:
 
@@ -86,5 +84,5 @@ density = 1.0
 kernel  = WendlandC6(3)
 
 # correct density
-density = bias_correction_3D(kernel, density, 1.0, 0.5, 295)
+density = bias_correction(kernel, density, 1.0, 0.5, 295)
 ```
