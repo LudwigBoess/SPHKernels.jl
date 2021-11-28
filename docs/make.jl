@@ -10,7 +10,7 @@ makedocs(
             "Install" => "install.md",
             "Kernels" => "kernels.md",
             "Extending" => "extending.md",
-            "SPH Functions" => "sph.md,"
+            "SPH Functions" => "sph.md",
             "API reference" => "api.md"
             ]
 )
