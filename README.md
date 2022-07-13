@@ -8,8 +8,6 @@ This package supplies a number of kernels frequently used in Smoothed-Particle H
 
 These kernels include the B-splines (`Cubic` and `Quintic`) suggested in [Monaghan & Lattanzio (1985)](https://ui.adsabs.harvard.edu/abs/1985A%26A...149..135M/abstract), the Wendland functions (`WendlandC2`, `WendlandC4` and `WendlandC6` from [Wendland (2009)](https://www.researchgate.net/publication/220179293_Divergence-Free_Kernel_Methods_for_Approximating_the_Stokes_Problem)) as suggested in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211) and `WendlandC8` as suggested by [Kummer et. al. (2019)](https://arxiv.org/abs/1902.02330).
 
-In this implementation we follow the convention of Dehnen&Aly in using the 'compact kernel support' as a means to define the maximum extent of the kernel. They denote this ``H`` in their paper, for convenience (aka for not having to type caps) we use `h` in the code.
-
 
 > :warning: **The version numbering of this package is unfortunately not really reflective of the state. I made an error on the original setup of the repository, so I had to start out with version 1.0. View this more as v0.2, instead of v2.0!**: Please sanity-check everything before you use it in production!
      
@@ -22,7 +20,7 @@ To evaluate a 3D kernel you need to use the function
 kernel_value(k::AbstractSPHKernel, u::Real, h_inv::Real)
 ```
 
-where `AbstractSPHKernel` is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the compact kernel support and `h_inv` is the inverse of the compact kernel support.
+where `AbstractSPHKernel` is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the smoothing length and `h_inv` is the inverse of the smoothing length.
 
 If you want your code to look a little more fancy you can also use the alternative functions `𝒲`:
 

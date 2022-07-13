@@ -7,11 +7,10 @@ DocTestSetup = quote
 end
 ```
 
-This package supplies a number of kernels frequently used in Smoothed-Particle Hydrodynamics (SPH), as well as functions to evaluate their values and derivatives in 2D and 3D.
+This package supplies a number of kernels frequently used in Smoothed-Particle Hydrodynamics (SPH), as well as functions to evaluate their values and derivatives in 1D, 2D and 3D.
 
 These kernels include the B-splines ([Cubic](@ref) and [Quintic](@ref)) suggested in [Monaghan & Lattanzio (1985)](https://ui.adsabs.harvard.edu/abs/1985A%26A...149..135M/abstract) and the Wendland functions ([WendlandC2](@ref), [WendlandC4](@ref), [WendlandC6](@ref)) and [WendlandC8](@ref) ([Wendland 2009](https://www.researchgate.net/publication/220179293_Divergence-Free_Kernel_Methods_for_Approximating_the_Stokes_Problem)) as suggested in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211).
 
-In this implementation we follow the convention of Dehnen&Aly in using the 'compact kernel support' as a means to define the maximum extent of the kernel. They denote this ``H`` in their paper, for convenience (aka for not having to type caps) we use `h` in the code.
 
 ```@eval 
 using SPHKernels
@@ -126,7 +125,7 @@ To evaluate a kernel you need to use the function
 kernel_value(k::AbstractSPHKernel, u::Real, h_inv::Real)
 ```
 
-where [AbstractSPHKernel](@ref) is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the compact kernel support and `h_inv` is the inverse of the compact kernel support.
+where [AbstractSPHKernel](@ref) is the supertype for an implemented SPH kernel, ``u = \frac{x}{h}`` is the distance to the kernel origin in measures of the smoothing length and `h_inv` is the inverse of the smoothing length.
 
 You need to define the dimension of the kernel in the `kernel <: AbstractSPHKernel`, as explained before.
 
