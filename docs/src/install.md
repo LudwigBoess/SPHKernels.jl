@@ -2,7 +2,7 @@
 
 As usual with Julia you can install the package via the internal package manager
 
-```@example
+```julia
 julia> ]
-pkg> add https://github.com/LudwigBoess/SPHKernels.jl
+pkg> add SPHKernels
 ```

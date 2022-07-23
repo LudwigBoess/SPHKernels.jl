@@ -39,9 +39,9 @@ function kernel_value(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
 
     if u < 1
         n = kernel.norm * h_inv^kernel.dim
-        return 1.0 * n |> T
+        return 1n |> T
     else
-        return 0.0 |> T
+        return 0 |> T
     end
 
 end
@@ -49,7 +49,7 @@ end
 
 ```@example 1
 @inline function kernel_deriv(kernel::MyKernel{T}, u::Real, h_inv::Real) where T
-    return 0.0 |> T
+    return 0 |> T
 end
 ```
 
@@ -63,7 +63,7 @@ h_inv = 1.0
 v = kernel_value(k, u, h_inv)
 println("MyKernel value: $v")
 
-d = kernel_derivk, u, h_inv)
+d = kernel_deriv(k, u, h_inv)
 println("MyKernel derivative: $d")
 ```
 
