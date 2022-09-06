@@ -1,0 +1,14 @@
+{
+    "license": "MIT", 
+    "upload_type": "lesson",
+    "keywords": [ "SPH", "kernel", "simulations" ],
+    "language": "eng",
+    "creators": [
+        {
+            "affiliation": "Universitäts-Sternwarte, Fakultät für Physik, Ludwig-Maximilians-Universität München, Scheinerstr.1, 81679 München, Germany", 
+            "name": "Ludwig Böss",
+            "orcid": "https://orcid.org/0000-0003-4690-2774"
+        }
+    ],
+    "access_right": "open"
+}
