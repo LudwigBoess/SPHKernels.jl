@@ -1,6 +1,6 @@
 {
     "license": "MIT", 
-    "upload_type": "lesson",
+    "upload_type": "software",
     "keywords": [ "SPH", "kernel", "simulations" ],
     "language": "eng",
     "creators": [
@@ -10,5 +10,6 @@
             "orcid": "https://orcid.org/0000-0003-4690-2774"
         }
     ],
-    "access_right": "open"
+    "access_right": "open",
+    "notes" : "Supported by: Germanys Excellence Strategy – EXC-2094 – 390783311 & The COMPLEX project from the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation program grant agreement ERC-2019-AdG 860744"
 }
