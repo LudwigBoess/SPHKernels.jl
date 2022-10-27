@@ -578,6 +578,25 @@ using SPHKernels, Test
         end
     end
 
+    @testset "Tophat" begin
+        k = Tophat()
+        @testset "value" begin
+            @test kernel_value(k, 0.5, 0.0) == 1
+            @test kernel_value(k, 1.5, 0.0) == 0
+        end
+
+        @testset "derivative" begin
+            @test kernel_deriv(k, 0.5, 0.0) == 0
+            @test kernel_deriv(k, 1.5, 0.0) == 0
+        end
+
+        @testset "bias correction" begin
+            d = bias_correction(k, 1.0, 1.0, 0.5, 128)
+
+            @test d == 1.0
+        end
+    end
+
     @testset "SPH Functions" begin
 
         # test quantities setup
