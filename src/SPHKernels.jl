@@ -19,7 +19,8 @@ module SPHKernels
             WendlandC2,
             WendlandC4,
             WendlandC6,
-            WendlandC8
+            WendlandC8,
+            Tophat
             
     using LinearAlgebra
 
@@ -57,6 +58,7 @@ module SPHKernels
     include("wendland/C4.jl")
     include("wendland/C6.jl")
     include("wendland/C8.jl")
+    include("tophat/tophat.jl")
     include("sph_functions/gradient.jl")
     include("sph_functions/div.jl")
     include("sph_functions/curl.jl")
