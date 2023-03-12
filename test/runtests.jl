@@ -597,6 +597,81 @@ using SPHKernels, Test
         end
     end
 
+    @testset "Double Cosine" begin
+
+        @testset "1D value" begin
+            k = DoubleCosine(1)
+            # < 1.0
+            d = kernel_value(k, 0.7, 0.5)
+            @test d ≈ 0.028320166371263368
+            # > 1.0
+            d = kernel_value(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "1D derivative" begin
+            k = DoubleCosine(1)
+            # < 1.0
+            d = kernel_deriv(k, 0.7, 0.5)
+            @test d ≈ -0.1746142939644753
+            # > 1.0
+            d = kernel_deriv(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "2D value" begin
+            k = DoubleCosine(2)
+            # < 1.0
+            d = kernel_value(k, 0.7, 0.5)
+            @test d ≈ 0.019613119518541704
+            # > 1.0
+            d = kernel_value(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "2D derivative" begin
+            k = DoubleCosine(2)
+            # < 1.0
+            d = kernel_deriv(k, 0.7, 0.5)
+            @test d ≈ -0.12092905713456979
+            # > 1.0
+            d = kernel_deriv(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+
+        @testset "3D value" begin
+            k = DoubleCosine(3)
+            # < 1.0
+            d = kernel_value(k, 0.7, 0.5)
+            @test d ≈ 0.04423346548830697
+            # > 1.0
+            d = kernel_value(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "3D derivative" begin
+            k = DoubleCosine(3)
+            # < 1.0
+            d = kernel_deriv(k, 0.7, 0.5)
+            @test d ≈ -0.2727312842935868
+            # > 1.0
+            d = kernel_deriv(k, 1.5, 0.5)
+            @test d == 0.0
+        end
+
+        @testset "bias correction" begin
+            k = DoubleCosine(3)
+            d = bias_correction(k, 1.0, 1.0, 0.5, 128)
+
+            @test d == 1.0
+        end
+
+        @testset "Dimension Error" begin
+            @test_throws ErrorException("DoubleCosine not defined for 4 dimensions!") DoubleCosine(4)
+        end
+    end
+
     @testset "SPH Functions" begin
 
         # test quantities setup

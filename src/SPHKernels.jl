@@ -20,7 +20,8 @@ module SPHKernels
             WendlandC4,
             WendlandC6,
             WendlandC8,
-            Tophat
+            Tophat,
+            DoubleCosine
             
     using LinearAlgebra
 
@@ -39,7 +40,7 @@ module SPHKernels
     function get_r(xᵢ::Vector{<:Real}, xⱼ::Vector{<:Real})
         # eukledian distance
         r2 = 0
-        @inbounds for dim = 1:length(xᵢ)
+        @inbounds for dim ∈ eachindex(xᵢ)
             r2 += (xᵢ[dim] - xⱼ[dim])^2
         end
         √(r2)
@@ -59,6 +60,7 @@ module SPHKernels
     include("wendland/C6.jl")
     include("wendland/C8.jl")
     include("tophat/tophat.jl")
+    include("trigonometric/double_cosine.jl")
     include("sph_functions/gradient.jl")
     include("sph_functions/div.jl")
     include("sph_functions/curl.jl")
@@ -86,7 +88,6 @@ module SPHKernels
     Corrects the density estimate for the kernel bias. See Dehnen&Aly 2012, eq. 18+19.
     """
     δρ(kernel::AbstractSPHKernel, density::Real, m::Real, h_inv::Real, n_neighbours::Integer) = bias_correction(kernel, density, m, h_inv, n_neighbours)
-
 
     
 end # module
