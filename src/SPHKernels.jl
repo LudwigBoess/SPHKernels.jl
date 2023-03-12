@@ -89,5 +89,72 @@ module SPHKernels
     """
     δρ(kernel::AbstractSPHKernel, density::Real, m::Real, h_inv::Real, n_neighbours::Integer) = bias_correction(kernel, density, m, h_inv, n_neighbours)
 
+
+    """
+        Precompile Functions
+    """
+
+    using SnoopPrecompile    # this is a small dependency
+
+    @precompile_setup begin
+        # Putting some things in `setup` can reduce the size of the
+        # precompile file and potentially make loading faster.
+        kernels = [kernel(dt, dim) for kernel ∈ [Cubic, Quintic, WendlandC2, WendlandC4, WendlandC6, WendlandC8, DoubleCosine], dt ∈ [Float32, Float64], dim ∈ [1, 2, 3]]
+
+        @precompile_all_calls begin
+            # all calls in this block will be precompiled, regardless of whether
+            # they belong to your package or not (on Julia 1.8 and higher)
+
+            for k ∈ kernels
+                for u ∈ [ 0.3, 0.5, 0.8, 1.5]
+                    kernel_value(k, u, 0.5)
+                    𝒲(k, u, 0.5)
+                    kernel_deriv(k, u, 0.5)
+                    d𝒲(k, u, 0.5)
+                    bias_correction(k, 1.0, 1.0, 0.5, 128)
+                    δρ(k, 1.0, 1.0, 0.5, 128)
+                end
+            end
+
+            # test quantities setup
+            x_i = [0.0, 0.0, 0.0]
+            x_j = [0.5, 0.5, 0.5]
+            Δx = x_i - x_j
+            A_i = [1.0, 1.0, 1.0]
+            A_j = [1.5, 1.5, 1.5]
+            m_j = 1.5
+            ρ_j = 1.5
+            k = WendlandC6(3)
+            r = SPHKernels.get_r(x_i, x_j)
+            h_inv = 1.0
+            u = r * h_inv
+
+            for k ∈ kernels
+                # quantity
+                𝒲(k, h_inv, x_i, x_j)
+                𝒲(k, u, h_inv)
+                𝒜(k, h_inv, x_i, x_j, A_j[1], m_j, ρ_j)
+                𝒜(k, r, h_inv, A_j[1], m_j, ρ_j)
+
+                # gradient
+                ∇𝒲(k, h_inv, x_i, x_j)
+                ∇𝒲(k, h_inv, x_i[1], x_j[1])
+                ∇𝒲(k, r, h_inv, Δx)
+                ∇𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
+                ∇𝒜(k, h_inv, x_i[1], x_j[1], A_j[1], m_j, ρ_j)
+                ∇𝒜(k, r, h_inv, Δx, A_j, m_j, ρ_j)
+
+                # divergence
+                ∇̇dot𝒲(k, h_inv, x_i, x_j, A_j)
+                ∇dot𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
+
+                # curl 
+                ∇x𝒲(k, h_inv, x_i, x_j, A_j)
+                ∇x𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
+            end
+
+
+        end
+    end
     
 end # module
