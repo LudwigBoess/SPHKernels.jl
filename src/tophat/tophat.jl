@@ -2,21 +2,19 @@ struct Tophat{T} <: AbstractSPHKernel
     value::T
 end
 
-
 """
-    WendlandC2(dim::Integer)
+    Tophat(dim::Integer)
 
-Define `WendlandC2` kernel with dimension `dim` for the native `DataType` of the OS.
+Define `Tophat` kernel with dimension `dim` for the native `DataType` of the OS.
 """
 Tophat(value::Real=1.0) = Tophat{typeof(value)}(value)
 
 """
     kernel_value(kernel::Tophat{T}, u::Real, h_inv::Real) where T
 
-Evaluate WendlandC2 spline at position ``u = \\frac{x}{h}``.
+Evaluate Tophat spline at position ``u = \\frac{x}{h}``.
 """
 function kernel_value(kernel::Tophat{T}, u::Real, h_inv::Real) where {T}
-
     if u < 1
         return kernel.value
     else
@@ -27,7 +25,7 @@ end
 """
     kernel_deriv_1D(kernel::Tophat{T}, u::Real, h_inv::Real) where T
 
-Evaluate the derivative of the WendlandC2 spline at position ``u = \\frac{x}{h}``.
+Evaluate the derivative of the Tophat spline at position ``u = \\frac{x}{h}``.
 """
 function kernel_deriv(kernel::Tophat{T}, u::Real, h_inv::Real) where {T}
     return 0 |> T 
