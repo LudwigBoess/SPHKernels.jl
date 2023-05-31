@@ -55,8 +55,8 @@ labels = ["Cubic", "Quintic",
          #"Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"
          ]
 
-colors = [ColorSchemes.BuPu_7[end], ColorSchemes.BuPu_7[end-1], 
-          ColorSchemes.PuBuGn_9[end], ColorSchemes.PuBuGn_9[end-1], ColorSchemes.PuBuGn_9[end-2], ColorSchemes.PuBuGn_9[end-3]]
+colors = [ColorSchemes.romaO10[end-i] for i = 1:length(labels)]
+
 
 fs    = 25
 scale = 750
@@ -74,23 +74,23 @@ for dim = 1:3
     for i ∈ 1:length(kernels)
 
         W = get_kernel_values(x, kernels[i]) 
-        lines!(ax_l, x, W, label=labels[i], color=colors[i])
+        lines!(ax_l, x, W, label=labels[i], color=colors[i], linewidth=5)
 
         if maximum(W) > max_W 
             max_W = maximum(W)
         end
 
         dW = get_kernel_deriv(x, kernels[i]) 
-        lines!(ax_r, x, dW, label=labels[i], color=colors[i])
+        lines!(ax_r, x, dW, label=labels[i], color=colors[i], linewidth=5)
 
     end
 
     text!(ax_l, "$(dim)D", position = (0.9, 0.95max_W), 
-            align = (:center, :center), textsize =2fs)
+            align = (:center, :center), fontsize =2fs)
 
 end
 
-line_elem = [LineElement(color = colors[i], linestyle = nothing) for i = 1:length(colors)]
+line_elem = [LineElement(color = colors[i], linestyle = nothing, linewidth=5) for i = 1:length(labels)]
 Legend(fig[1, 1:2], line_elem, labels,
         framevisible = false, 
         orientation = :horizontal,
@@ -144,7 +144,7 @@ dims = [1, 2, 3]
 labels = ["Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"
          ]
 
-colors = [ColorSchemes.PuBuGn_9[end], ColorSchemes.PuBuGn_9[end-1], ColorSchemes.PuBuGn_9[end-2], ColorSchemes.PuBuGn_9[end-3]]
+colors = [ColorSchemes.romaO10[end-i] for i = 1:length(labels)]
 
 fs    = 25
 scale = 750
@@ -162,23 +162,23 @@ for dim = 1:3
     for i ∈ 1:length(kernels)
 
         W = get_kernel_values(x, kernels[i]) 
-        lines!(ax_l, x, W, label=labels[i], color=colors[i])
+        lines!(ax_l, x, W, label=labels[i], color=colors[i], linewidth=5)
 
         if maximum(W) > max_W 
             max_W = maximum(W)
         end
 
         dW = get_kernel_deriv(x, kernels[i]) 
-        lines!(ax_r, x, dW, label=labels[i], color=colors[i])
+        lines!(ax_r, x, dW, label=labels[i], color=colors[i], linewidth=5)
 
     end
 
     text!(ax_l, "$(dim)D", position = (0.9, 0.95max_W), 
-            align = (:center, :center), textsize =2fs)
+            align = (:center, :center), fontsize =2fs)
 
 end
 
-line_elem = [LineElement(color = colors[i], linestyle = nothing) for i = 1:length(colors)]
+line_elem = [LineElement(color = colors[i], linestyle = nothing, linewidth=5) for i = 1:length(colors)]
 Legend(fig[1, 1:2], line_elem, labels,
         framevisible = false, 
         orientation = :horizontal,
@@ -220,7 +220,7 @@ end
 
 function get_kernels(dim)
 
-    [ TopHat(dim), DoubleCosine(dim)
+    [ Tophat(), DoubleCosine(dim)
     ]
 
 end
@@ -233,8 +233,8 @@ dims = [1, 2, 3]
 labels = ["TopHat", "DoubleCosine"
          ]
 
-colors = [ColorSchemes.BuPu_7[end], ColorSchemes.BuPu_7[end-1], 
-          ColorSchemes.PuBuGn_9[end], ColorSchemes.PuBuGn_9[end-1], ColorSchemes.PuBuGn_9[end-2], ColorSchemes.PuBuGn_9[end-3]]
+colors = [ColorSchemes.romaO10[end-i] for i = 1:length(labels)]
+
 
 fs    = 25
 scale = 750
@@ -252,23 +252,23 @@ for dim = 1:3
     for i ∈ 1:length(kernels)
 
         W = get_kernel_values(x, kernels[i]) 
-        lines!(ax_l, x, W, label=labels[i], color=colors[i])
+        lines!(ax_l, x, W, label=labels[i], color=colors[i], linewidth=5)
 
         if maximum(W) > max_W 
             max_W = maximum(W)
         end
 
         dW = get_kernel_deriv(x, kernels[i]) 
-        lines!(ax_r, x, dW, label=labels[i], color=colors[i])
+        lines!(ax_r, x, dW, label=labels[i], color=colors[i], linewidth=5)
 
     end
 
     text!(ax_l, "$(dim)D", position = (0.9, 0.95max_W), 
-            align = (:center, :center), textsize =2fs)
+            align = (:center, :center), fontsize =2fs)
 
 end
 
-line_elem = [LineElement(color = colors[i], linestyle = nothing) for i = 1:length(colors)]
+line_elem = [LineElement(color = colors[i], linestyle = nothing, linewidth=5) for i = 1:length(colors)]
 Legend(fig[1, 1:2], line_elem, labels,
         framevisible = false, 
         orientation = :horizontal,
