@@ -11,6 +11,7 @@ This package supplies a number of kernels frequently used in Smoothed-Particle H
 
 These kernels include the B-splines ([Cubic](@ref) and [Quintic](@ref)) suggested in [Monaghan & Lattanzio (1985)](https://ui.adsabs.harvard.edu/abs/1985A%26A...149..135M/abstract) and the Wendland functions ([WendlandC2](@ref), [WendlandC4](@ref), [WendlandC6](@ref)) and [WendlandC8](@ref) ([Wendland 2009](https://www.researchgate.net/publication/220179293_Divergence-Free_Kernel_Methods_for_Approximating_the_Stokes_Problem)) as suggested in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211).
 
+## Monaghan Kernels 
 
 ```@eval 
 using SPHKernels
@@ -40,8 +41,7 @@ end
 
 function get_kernels(dim)
 
-    [ Cubic(dim), Quintic(dim), 
-      WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim)
+    [ Cubic(dim), Quintic(dim)#, WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim)
     ]
 
 end
@@ -52,7 +52,8 @@ x = LinRange(0, 1, N_samples)
 dims = [1, 2, 3]
 
 labels = ["Cubic", "Quintic", 
-         "Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"]
+         #"Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"
+         ]
 
 colors = [ColorSchemes.BuPu_7[end], ColorSchemes.BuPu_7[end-1], 
           ColorSchemes.PuBuGn_9[end], ColorSchemes.PuBuGn_9[end-1], ColorSchemes.PuBuGn_9[end-2], ColorSchemes.PuBuGn_9[end-3]]
@@ -95,10 +96,189 @@ Legend(fig[1, 1:2], line_elem, labels,
         orientation = :horizontal,
         nbanks = 2)
 
-save("kernels.png", fig); nothing # hide
+save("monaghan_kernels.png", fig); nothing # hide
 ```
 
-![kernels](kernels.png)
+![kernels](monaghan_kernels.png)
+
+## Wendland Kernels 
+
+```@eval 
+using SPHKernels
+using CairoMakie
+import ColorSchemes
+
+function get_kernel_values(x, k)            
+
+    W = Vector{Float64}(undef, length(x))
+    for i = 1:length(x)
+        W[i] = 𝒲(k, x[i], 1.0)
+    end
+
+    W
+end
+
+function get_kernel_deriv(x, k)            
+
+    dW = Vector{Float64}(undef, length(x))
+    for i = 1:length(x)
+        dW[i] = d𝒲(k, x[i], 1.0)
+    end
+
+    dW
+end
+
+
+function get_kernels(dim)
+
+    [ WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim)
+    ]
+
+end
+
+N_samples = 1_000
+x = LinRange(0, 1, N_samples)
+
+dims = [1, 2, 3]
+
+labels = ["Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"
+         ]
+
+colors = [ColorSchemes.PuBuGn_9[end], ColorSchemes.PuBuGn_9[end-1], ColorSchemes.PuBuGn_9[end-2], ColorSchemes.PuBuGn_9[end-3]]
+
+fs    = 25
+scale = 750
+fig   = Figure(resolution = (1.5*scale, 2.1*scale), fontsize=fs)
+
+for dim = 1:3
+
+    ax_l = Axis(fig[dim+1, 1], xlabel="x = r/h", ylabel="W(x)")
+    ax_r = Axis(fig[dim+1, 2], xlabel="x = r/h", ylabel="W'(x)")
+
+    kernels = get_kernels(dim)
+
+    max_W = 0.0
+
+    for i ∈ 1:length(kernels)
+
+        W = get_kernel_values(x, kernels[i]) 
+        lines!(ax_l, x, W, label=labels[i], color=colors[i])
+
+        if maximum(W) > max_W 
+            max_W = maximum(W)
+        end
+
+        dW = get_kernel_deriv(x, kernels[i]) 
+        lines!(ax_r, x, dW, label=labels[i], color=colors[i])
+
+    end
+
+    text!(ax_l, "$(dim)D", position = (0.9, 0.95max_W), 
+            align = (:center, :center), textsize =2fs)
+
+end
+
+line_elem = [LineElement(color = colors[i], linestyle = nothing) for i = 1:length(colors)]
+Legend(fig[1, 1:2], line_elem, labels,
+        framevisible = false, 
+        orientation = :horizontal,
+        nbanks = 2)
+
+save("wendland_kernels.png", fig); nothing # hide
+```
+
+![kernels](wendland_kernels.png)
+
+
+## Misc Kernels 
+
+```@eval 
+using SPHKernels
+using CairoMakie
+import ColorSchemes
+
+function get_kernel_values(x, k)            
+
+    W = Vector{Float64}(undef, length(x))
+    for i = 1:length(x)
+        W[i] = 𝒲(k, x[i], 1.0)
+    end
+
+    W
+end
+
+function get_kernel_deriv(x, k)            
+
+    dW = Vector{Float64}(undef, length(x))
+    for i = 1:length(x)
+        dW[i] = d𝒲(k, x[i], 1.0)
+    end
+
+    dW
+end
+
+
+function get_kernels(dim)
+
+    [ TopHat(dim), DoubleCosine(dim)
+    ]
+
+end
+
+N_samples = 1_000
+x = LinRange(0, 1, N_samples)
+
+dims = [1, 2, 3]
+
+labels = ["TopHat", "DoubleCosine"
+         ]
+
+colors = [ColorSchemes.BuPu_7[end], ColorSchemes.BuPu_7[end-1], 
+          ColorSchemes.PuBuGn_9[end], ColorSchemes.PuBuGn_9[end-1], ColorSchemes.PuBuGn_9[end-2], ColorSchemes.PuBuGn_9[end-3]]
+
+fs    = 25
+scale = 750
+fig   = Figure(resolution = (1.5*scale, 2.1*scale), fontsize=fs)
+
+for dim = 1:3
+
+    ax_l = Axis(fig[dim+1, 1], xlabel="x = r/h", ylabel="W(x)")
+    ax_r = Axis(fig[dim+1, 2], xlabel="x = r/h", ylabel="W'(x)")
+
+    kernels = get_kernels(dim)
+
+    max_W = 0.0
+
+    for i ∈ 1:length(kernels)
+
+        W = get_kernel_values(x, kernels[i]) 
+        lines!(ax_l, x, W, label=labels[i], color=colors[i])
+
+        if maximum(W) > max_W 
+            max_W = maximum(W)
+        end
+
+        dW = get_kernel_deriv(x, kernels[i]) 
+        lines!(ax_r, x, dW, label=labels[i], color=colors[i])
+
+    end
+
+    text!(ax_l, "$(dim)D", position = (0.9, 0.95max_W), 
+            align = (:center, :center), textsize =2fs)
+
+end
+
+line_elem = [LineElement(color = colors[i], linestyle = nothing) for i = 1:length(colors)]
+Legend(fig[1, 1:2], line_elem, labels,
+        framevisible = false, 
+        orientation = :horizontal,
+        nbanks = 2)
+
+save("misc_kernels.png", fig); nothing # hide
+```
+
+![kernels](misc_kernels.png)
+
 
 ## Defining Kernels
 
