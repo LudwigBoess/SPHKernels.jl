@@ -76,7 +76,7 @@ end
 
 
 """
-    kernel_value_2D(kernel::WendlandC6{T}, u::Real, h_inv::Real) where T
+    kernel_value(kernel::WendlandC6{T}, u::Real, h_inv::Real) where T
 
 Evaluate WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """
@@ -97,7 +97,7 @@ function kernel_value(kernel::WendlandC6{T}, u::Real, h_inv::Real) where {T}
 end
 
 """
-    kernel_deriv_2D(kernel::WendlandC6, u::Real, h_inv::Real)
+    kernel_deriv(kernel::WendlandC6, u::Real, h_inv::Real)
 
 Evaluate the derivative of the WendlandC6 spline at position ``u = \\frac{x}{h}``.
 """

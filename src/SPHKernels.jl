@@ -20,7 +20,8 @@ module SPHKernels
             WendlandC4,
             WendlandC6,
             WendlandC8,
-            Tophat
+            Tophat,
+            DoubleCosine
             
     using LinearAlgebra
 
@@ -39,7 +40,7 @@ module SPHKernels
     function get_r(xᵢ::Vector{<:Real}, xⱼ::Vector{<:Real})
         # eukledian distance
         r2 = 0
-        @inbounds for dim = 1:length(xᵢ)
+        @inbounds for dim ∈ eachindex(xᵢ)
             r2 += (xᵢ[dim] - xⱼ[dim])^2
         end
         √(r2)
@@ -59,6 +60,7 @@ module SPHKernels
     include("wendland/C6.jl")
     include("wendland/C8.jl")
     include("tophat/tophat.jl")
+    include("trigonometric/double_cosine.jl")
     include("sph_functions/gradient.jl")
     include("sph_functions/div.jl")
     include("sph_functions/curl.jl")
@@ -88,5 +90,77 @@ module SPHKernels
     δρ(kernel::AbstractSPHKernel, density::Real, m::Real, h_inv::Real, n_neighbours::Integer) = bias_correction(kernel, density, m, h_inv, n_neighbours)
 
 
+    """
+        Precompile Functions
+    """
+
+    using PrecompileTools    # this is a small dependency
+
+    @setup_workload begin
+        # Putting some things in `setup` can reduce the size of the
+        # precompile file and potentially make loading faster.
+
+        kernels = vcat([kernel(dt, dim) for kernel ∈ [Cubic, Quintic, WendlandC2, WendlandC4, WendlandC6, WendlandC8, DoubleCosine],
+                                        dt ∈ [Float32, Float64], dim ∈ [1, 2, 3]]...)
+        # also add TopHat
+        push!(kernels, Tophat())
+
+        @compile_workload begin
+            # all calls in this block will be precompiled, regardless of whether
+            # they belong to your package or not (on Julia 1.8 and higher)
+
+            # loop over datatypes 
+            for dt ∈ [Float32, Float64]
+
+                for k ∈ kernels
+                    for u ∈ dt.([ 0.3, 0.5, 0.8, 1.5])
+                        kernel_value(k, u, dt(0.5))
+                        𝒲(k, u, dt(0.5))
+                        kernel_deriv(k, u, dt(0.5))
+                        d𝒲(k, u, dt(0.5))
+                        bias_correction(k, dt(1.0), dt(1.0), dt(0.5), 128)
+                        δρ(k, dt(1.0), dt(1.0), dt(0.5), 128)
+                    end
+                end
+
+                # test quantities setup
+                x_i = dt.([0.0, 0.0, 0.0])
+                x_j = dt.([0.5, 0.5, 0.5])
+                Δx = x_i - x_j
+                A_i = dt.([1.0, 1.0, 1.0])
+                A_j = dt.([1.5, 1.5, 1.5])
+                m_j = dt(1.5)
+                ρ_j = dt(1.5)
+                r = SPHKernels.get_r(x_i, x_j)
+                h_inv = dt(1.0)
+                u = r * h_inv
+
+                for k ∈ kernels
+                    # quantity
+                    𝒲(k, h_inv, x_i, x_j)
+                    𝒲(k, u, h_inv)
+                    𝒜(k, h_inv, x_i, x_j, A_j[1], m_j, ρ_j)
+                    𝒜(k, r, h_inv, A_j[1], m_j, ρ_j)
+
+                    # gradient
+                    ∇𝒲(k, h_inv, x_i, x_j)
+                    ∇𝒲(k, h_inv, x_i[1], x_j[1])
+                    ∇𝒲(k, r, h_inv, Δx)
+                    ∇𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
+                    ∇𝒜(k, h_inv, x_i[1], x_j[1], A_j[1], m_j, ρ_j)
+                    ∇𝒜(k, r, h_inv, Δx, A_j, m_j, ρ_j)
+
+                    # divergence
+                    ∇̇dot𝒲(k, h_inv, x_i, x_j, A_j)
+                    ∇dot𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
+
+                    # curl 
+                    ∇x𝒲(k, h_inv, x_i, x_j, A_j)
+                    ∇x𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
+                end
+
+            end # dt
+        end
+    end
     
 end # module
