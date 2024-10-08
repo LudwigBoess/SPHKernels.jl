@@ -9,7 +9,7 @@ module SPHKernels
             bias_correction,       δρ,
             kernel_gradient,      ∇𝒲, 
             quantity_gradient,    ∇𝒜,
-            kernel_div,           ∇̇dot𝒲,
+            kernel_div,           ∇dot𝒲,
             quantity_divergence,  ∇dot𝒜,
             kernel_curl,          ∇x𝒲,
             quantity_curl,        ∇x𝒜,
@@ -151,7 +151,7 @@ module SPHKernels
                     ∇𝒜(k, r, h_inv, Δx, A_j, m_j, ρ_j)
 
                     # divergence
-                    ∇̇dot𝒲(k, h_inv, x_i, x_j, A_j)
+                    ∇dot𝒲(k, h_inv, x_i, x_j, A_j)
                     ∇dot𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
 
                     # curl 

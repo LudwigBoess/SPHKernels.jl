@@ -715,7 +715,7 @@ using SPHKernels, Test
 
         @testset "Divergence" begin
             # kernel 
-            @test ∇̇dot𝒲(k, h_inv, x_i, x_j, A_j)           ≈ 0.004962925065655849
+            @test ∇dot𝒲(k, h_inv, x_i, x_j, A_j)           ≈ 0.004962925065655849
             # quantity
             @test ∇dot𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j) ≈ 0.004962925065655849
         end

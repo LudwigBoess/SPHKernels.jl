@@ -1,29 +1,24 @@
 """
-    kernel_div( k::AbstractSPHKernel,       h_inv::Real, 
-                xᵢ::Vector{<:Real}, xⱼ::Vector{<:Real},
-                Aᵢ::Vector{<:Real}, Aⱼ::Vector{<:Real} )
+    kernel_div( k::AbstractSPHKernel, h_inv::T1, 
+                xᵢ::T2, xⱼ::T2, Aⱼ::T2) where {T1,T2}
 
 Compute the kernel divergence `∇⋅𝒲` between particle `i` and neighbour `j` for some SPH quantity `A`.
 """
-function kernel_div( k::AbstractSPHKernel,       h_inv::Real, 
-                     xᵢ::Vector{<:Real}, xⱼ::Vector{<:Real},
-                     Aⱼ::Vector{<:Real})
-    
+function kernel_div( k::AbstractSPHKernel, h_inv::T1, 
+                     xᵢ::T2, xⱼ::T2, Aⱼ::T2) where {T1,T2}
     Aⱼ ⋅ ∇𝒲(k, h_inv, xᵢ, xⱼ)
 end
 
 
 """
-    ∇̇dot𝒲( k::AbstractSPHKernel, h_inv::Real, 
-            xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-            Aᵢ::Vector{<:Real},   Aⱼ::Vector{<:Real})
+    ∇dot𝒲( k::AbstractSPHKernel, h_inv::T1, 
+            xᵢ::T2, xⱼ::T2, Aⱼ::T2) where {T1,T2}
 
 Compute the kernel divergence `∇⋅𝒲` between particle `i` and neighbour `j` for some SPH quantity `A`.
 Compact notation of [`kernel_div`](@ref).
 """
-∇̇dot𝒲( k::AbstractSPHKernel, h_inv::Real, 
-     xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-     Aⱼ::Vector{<:Real}) = kernel_div( k, h_inv, xᵢ, xⱼ, Aⱼ)
+∇dot𝒲( k::AbstractSPHKernel, h_inv::T1, 
+     xᵢ::T2, xⱼ::T2, Aⱼ::T2) where {T1,T2} = kernel_div( k, h_inv, xᵢ, xⱼ, Aⱼ)
 
 
 """
@@ -41,7 +36,7 @@ function quantity_divergence( k::AbstractSPHKernel, h_inv::Real,
                               Aⱼ::Vector{<:Real},
                               mⱼ::Real,             ρⱼ::Real ) 
      
-    mⱼ / ρⱼ * ∇̇dot𝒲( k, h_inv, xᵢ, xⱼ, Aⱼ)
+    mⱼ / ρⱼ * ∇dot𝒲( k, h_inv, xᵢ, xⱼ, Aⱼ)
 
 end
 
