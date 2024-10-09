@@ -42,36 +42,50 @@ Define `DoubleCosine` kernel with dimension `dim` for the native `DataType` of t
 DoubleCosine(dim::Integer) = DoubleCosine(typeof(1.0), dim)
 
 """
-    kernel_value(kernel::DoubleCosine, u::Real, h_inv::Real)
-Evaluate DoubleCosine spline at position ``u = \\frac{x}{h}``.
+    kernel_value(kernel::DoubleCosine, u::Real)
+
+Evaluate DoubleCosine spline at position ``u = \\frac{x}{h}``, without normalisation.
 """
-function kernel_value(kernel::DoubleCosine{T}, u::Real, h_inv::Real) where {T}
+function kernel_value(kernel::DoubleCosine{T}, u::Real) where {T}
 
     if u < 1
-        n = kernel.norm * h_inv^kernel.dim
-        return (4 * cos(π * u) + cos(2π * u) + 3) * n
+        return (4 * cos(π * u) + cos(2π * u) + 3)
     else
         return 0 |> T
     end
 
 end
 
+"""
+    kernel_value(kernel::DoubleCosine, u::Real, h_inv::Real)
+Evaluate DoubleCosine spline at position ``u = \\frac{x}{h}``.
+"""
+kernel_value(kernel::DoubleCosine{T}, u::Real, h_inv::Real) where {T} =
+    T(kernel.norm * h_inv^kernel.dim) * kernel_value(kernel, u)
+
+
+"""
+    kernel_deriv(kernel::DoubleCosine, u::Real)
+
+Evaluate the derivative of the DoubleCosine spline at position ``u = \\frac{x}{h}``, without normalisation.
+"""
+function kernel_deriv(kernel::DoubleCosine{T}, u::Real) where {T}
+
+    if u < 1
+        return (-4π * sin(π * u) - 2π * sin(2π * u))
+    else
+        return 0 |> T
+    end
+
+end
 
 """
     kernel_deriv(kernel::DoubleCosine, u::Real, h_inv::Real)
 
 Evaluate the derivative of the DoubleCosine spline at position ``u = \\frac{x}{h}``.
 """
-function kernel_deriv(kernel::DoubleCosine{T}, u::Real, h_inv::Real) where {T}
-
-    if u < 1
-        n = kernel.norm * h_inv^kernel.dim * h_inv
-        return (-4π * sin(π * u) - 2π * sin(2π * u)) * n
-    else
-        return 0 |> T
-    end
-
-end
+kernel_deriv(kernel::DoubleCosine{T}, u::Real, h_inv::Real) where {T} = 
+    T(kernel.norm * h_inv^kernel.dim * h_inv) * kernel_deriv(kernel, u)
 
 
 """ 
