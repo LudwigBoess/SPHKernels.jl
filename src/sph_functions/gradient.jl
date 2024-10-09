@@ -1,15 +1,12 @@
 
 """
-    kernel_gradient( k::AbstractSPHKernel, h_inv::Real, 
-                     xᵢ::Union{Real, Vector{<:Real}}, 
-                     xⱼ::Union{Real, Vector{<:Real}} )
+    kernel_gradient( k::AbstractSPHKernel, h_inv::Real, xᵢ::T, xⱼ::T ) where T
 
 Computes the gradient of the kernel `k` at the position of the neighbour `xⱼ`. 
 
 ``∇W(x_{ij}, h_i) = \\frac{dW}{dx}\\vert_{x_j} \\frac{Δx_{ij}}{||x_{ij}||} \\frac{1}{h_i}`` 
 """
-function kernel_gradient( k::AbstractSPHKernel, h_inv::Real, 
-                          xᵢ::T, xⱼ::T ) where T
+function kernel_gradient( k::AbstractSPHKernel, h_inv::Real, xᵢ::T, xⱼ::T ) where T
     r  = get_r(xᵢ, xⱼ)
 
     dwk_r = d𝒲(k, r*h_inv, h_inv) / r
@@ -20,8 +17,7 @@ function kernel_gradient( k::AbstractSPHKernel, h_inv::Real,
 end
 
 """
-    kernel_gradient( k::AbstractSPHKernel, r::Real, h_inv::Real, 
-                     Δx::Vector{<:Real})
+    kernel_gradient( k::AbstractSPHKernel, r::T1, h_inv::T1, Δx::T2) where {T1,T2}
 
 Computes the gradient of the kernel `k` at the distance `r` along the distance vector `Δx` of the neighbour `j`. 
 
@@ -39,15 +35,14 @@ end
 
 
 """
-    ∇𝒲( k::AbstractSPHKernel, h_inv::Real, xᵢ::Union{Real, Vector{<:Real}}, xⱼ::Union{Real, Vector{<:Real}} )
+    ∇𝒲( k::AbstractSPHKernel, h_inv::T1, xᵢ::T2, xⱼ::T2 ) where {T1<:Real,T2}
 
 Computes the gradient of the kernel `k` at the position of the neighbour `xⱼ`. 
 Compact notation of [`kernel_gradient`](@ref).
 
 ``∇W(x_{ij}, h_i) = \\frac{dW}{dx}\\vert_{x_j} \\frac{Δx_{ij}}{||x_{ij}||} \\frac{1}{h_i}`` 
 """
-∇𝒲( k::AbstractSPHKernel, h_inv::T1, 
-     xᵢ::T2, xⱼ::T2 ) where {T1<:Real,T2} = kernel_gradient(k, h_inv, xᵢ, xⱼ)
+∇𝒲( k::AbstractSPHKernel, h_inv::T1, xᵢ::T2, xⱼ::T2 ) where {T1<:Real,T2} = kernel_gradient(k, h_inv, xᵢ, xⱼ)
 
 """
     ∇𝒲( k::AbstractSPHKernel, h_inv::Real, xᵢ::Union{Real, Vector{<:Real}}, xⱼ::Union{Real, Vector{<:Real}} )
@@ -63,11 +58,9 @@ Compact notation of [`kernel_gradient`](@ref).
 
 
 """
-    quantity_gradient( k::AbstractSPHKernel, h_inv::Real, 
-                       xᵢ::Union{Real, Vector{<:Real}},   
-                       xⱼ::Union{Real, Vector{<:Real}},
-                       Aⱼ::Union{Real, Vector{<:Real}},
-                       mⱼ::Real,             ρⱼ::Real ) 
+    quantity_gradient(k::AbstractSPHKernel, h_inv::T1, 
+                      xᵢ::T2, xⱼ::T2, Aⱼ::T2,
+                      mⱼ::T1, ρⱼ::T1 ) where {T1<:Real, T2}
 
 Compute the contribution of particle `j` to the gradient of the SPH quantity `A` for particle `i`.
 Based on positions `xᵢ` and `xⱼ`.
@@ -90,11 +83,10 @@ end
 
 
 """
-    quantity_gradient( k::AbstractSPHKernel, 
-                       r::Real,  h_inv::Real, 
-                       Δx::Union{Real, Vector{<:Real}},
-                       Aⱼ::Union{Real, Vector{<:Real}},
-                       mⱼ::Real, ρⱼ::Real ) 
+    quantity_gradient(k::AbstractSPHKernel,
+                      r::T1, h_inv::T1,
+                      Δx::T2, Aⱼ::T2,
+                      mⱼ::T1, ρⱼ::T1) where {T1<:Real,T2}
 
 Compute the contribution of particle `j` to the gradient of the SPH quantity `A` for particle `i`.
 Based on Euclidean distance `r` and distance vector `Δx` between the particles. 
@@ -117,10 +109,7 @@ end
 
 
 """
-    ∇𝒜( k::AbstractSPHKernel, h_inv::Real, 
-        xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-        Aⱼ::Vector{<:Real},   
-        mⱼ::Real=1,           ρⱼ::Real=1 )
+    ∇𝒜( k::AbstractSPHKernel, h_inv, xᵢ, xⱼ, Aⱼ, mⱼ, ρⱼ)
 
 Compute the contribution of particle `j` to the gradient of the SPH quantity `A` for particle `i`.
 Compact notation of [`quantity_gradient`](@ref).
