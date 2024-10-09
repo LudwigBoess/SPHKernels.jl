@@ -14,12 +14,10 @@ end
 
 Compute the kernel curl `∇x𝒲` between particle `i` and neighbour `j` for some SPH quantity `A`.
 """
-∇x𝒲(k::AbstractSPHKernel, h_inv::T1, 
-     xᵢ::T2, xⱼ::T2, Aⱼ::T2) where {T1,T2} = kernel_curl( k, h_inv, xᵢ, xⱼ, Aⱼ)
+∇x𝒲(k::AbstractSPHKernel, h_inv::T1, xᵢ::T2, xⱼ::T2, Aⱼ::T2) where {T1,T2} = kernel_curl( k, h_inv, xᵢ, xⱼ, Aⱼ)
 
 """
-    quantity_curl(k::AbstractSPHKernel, h_inv::T1, xᵢ::T2, xⱼ::T2, 
-                  Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
+    quantity_curl(k::AbstractSPHKernel, h_inv::T1, xᵢ::T2, xⱼ::T2, Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
 
 Compute the contribution of particle `j` to the curl of the SPH quantity `A` for particle `i`.
 
@@ -33,14 +31,11 @@ end
 
 
 """
-    ∇x𝒜(k::AbstractSPHKernel, h_inv::T1, 
-        xᵢ::T2, xⱼ::T2, Aⱼ::T2,
-        mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
+    ∇x𝒜(k::AbstractSPHKernel, h_inv::T1, xᵢ::T2, xⱼ::T2, Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
 
 Compute the contribution of particle `j` to the curl of the SPH quantity `A` for particle `i`.
 
 ``∇×\\vec{A}_i(x) ≈ - \\sum_j \\frac{m_j}{\\rho_j} \\vec{A}_j \\times ∇W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
-∇x𝒜(k::AbstractSPHKernel, h_inv::T1, 
-    xᵢ::T2, xⱼ::T2, Aⱼ::T2,
-    mⱼ::T1, ρⱼ::T1 ) where {T1,T2} = quantity_curl( k, h_inv, xᵢ, xⱼ, Aⱼ, mⱼ, ρⱼ)
+∇x𝒜(k::AbstractSPHKernel, h_inv::T1, xᵢ::T2, xⱼ::T2, Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2} = 
+    quantity_curl( k, h_inv, xᵢ, xⱼ, Aⱼ, mⱼ, ρⱼ)
