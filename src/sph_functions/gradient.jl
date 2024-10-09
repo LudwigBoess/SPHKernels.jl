@@ -72,7 +72,7 @@ Compact notation of [`kernel_gradient`](@ref).
 Compute the contribution of particle `j` to the gradient of the SPH quantity `A` for particle `i`.
 Based on positions `xᵢ` and `xⱼ`.
 
-``∇\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} ∇W(||\\vec{x}_i - \\vec{x}_j||, h_i)``
+``∇\\vec{A}_i(x) ≈ \\sum_j \\frac{m_j}{\\rho_j} \\vec{A}_j \\: ∇W(||\\vec{x}_i - \\vec{x}_j||, h_i)``
 """
 function quantity_gradient( k::AbstractSPHKernel, h_inv::T1, 
                             xᵢ::T2, xⱼ::T2, Aⱼ::T2,
@@ -100,7 +100,7 @@ Compute the contribution of particle `j` to the gradient of the SPH quantity `A`
 Based on Euclidean distance `r` and distance vector `Δx` between the particles. 
 Useful if many quantities need to be computed for the same particle pair.
 
-``∇\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} ∇W(||\\vec{x}_i - \\vec{x}_j||, h_i)``
+``∇\\vec{A}_i(x) ≈ \\sum_j \\frac{m_j}{\\rho_j} \\vec{A}_j \\: ∇W(||\\vec{x}_i - \\vec{x}_j||, h_i)``
 """
 function quantity_gradient(k::AbstractSPHKernel,
                            r::T1, h_inv::T1,
@@ -125,6 +125,6 @@ end
 Compute the contribution of particle `j` to the gradient of the SPH quantity `A` for particle `i`.
 Compact notation of [`quantity_gradient`](@ref).
 
-``∇\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} ∇W(||\\vec{x}_i - \\vec{x}_j||, h_i)``
+``∇\\vec{A}_i(x) ≈ \\sum_j \\frac{m_j}{\\rho_j} \\vec{A}_j \\: ∇W(||\\vec{x}_i - \\vec{x}_j||, h_i)``
 """
 ∇𝒜( k::AbstractSPHKernel, h_inv, xᵢ, xⱼ, Aⱼ, mⱼ, ρⱼ) = quantity_gradient( k, h_inv, xᵢ, xⱼ, Aⱼ, mⱼ, ρⱼ)

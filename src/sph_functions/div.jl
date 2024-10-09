@@ -29,7 +29,7 @@ Compact notation of [`kernel_div`](@ref).
 
 Compute the contribution of particle `j` to the divergence of the SPH quantity `A` for particle `i`.
 
-``∇\\cdot\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} \\cdot ∇W(\\vec{x}_i - \\vec{x}_j, h_i)``
+``∇\\cdot\\vec{A}_i(x) ≈ \\sum_j \\frac{m_j}{\\rho_j} \\vec{A}_j \\cdot ∇W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
 function quantity_divergence( k::AbstractSPHKernel, h_inv::Real, 
                               xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
@@ -49,7 +49,7 @@ end
 Compute the contribution of particle `j` to the divergence of the SPH quantity `A` for particle `i`.
 Compact notation of [`quantity_divergence`](@ref).
 
-``∇\\cdot\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} \\cdot ∇W(\\vec{x}_i - \\vec{x}_j, h_i)``
+``∇\\cdot\\vec{A}_i(x) ≈ \\sum_j \\frac{m_j}{\\rho_j} \\vec{A}_j \\cdot ∇W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
 ∇dot𝒜( k::AbstractSPHKernel, h_inv::Real, 
         xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
