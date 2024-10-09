@@ -734,6 +734,7 @@ using SPHKernels, Test
 
             k = WendlandC6()
             @test 𝒲(k, 0.5, 1.0) ≈ kernel_value(k, 0.5, 1.0)
+            @test 𝒲(k, 0.5) ≈ kernel_value(k, 0.5)
 
             @test 𝒲(k, 1.0, [0.0, 0.0, 0.0], [0.5, 0.0, 0.0]) ≈ kernel_value(k, 0.5, 1.0)
 
@@ -743,6 +744,7 @@ using SPHKernels, Test
         @testset "kernel derivative" begin
             k = WendlandC6()
             @test d𝒲(k, 0.5, 1.0) ≈ kernel_deriv(k, 0.5, 1.0)
+            @test d𝒲(k, 0.5) ≈ kernel_deriv(k, 0.5)
         end
 
         @testset "bias correction" begin
