@@ -41,8 +41,7 @@ end
 
 function get_kernels(dim)
 
-    [ Cubic(dim), Quintic(dim)#, WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim)
-    ]
+    [ Cubic(dim), Quintic(dim)]
 
 end
 
@@ -51,9 +50,7 @@ x = LinRange(0, 1, N_samples)
 
 dims = [1, 2, 3]
 
-labels = ["Cubic", "Quintic", 
-         #"Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"
-         ]
+labels = ["Cubic", "Quintic"]
 
 colors = [ColorSchemes.romaO10[end-i] for i = 1:length(labels)]
 
@@ -131,8 +128,7 @@ end
 
 function get_kernels(dim)
 
-    [ WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim)
-    ]
+    [ WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim) ]
 
 end
 

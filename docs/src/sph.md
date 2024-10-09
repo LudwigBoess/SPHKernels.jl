@@ -102,7 +102,7 @@ kernel_div
 or its more compact form
 
 ```@docs
-∇̇dot𝒲
+∇dot𝒲
 ```
 
 where `xᵢ` and `xⱼ` are the positions of particles `i` and `j` in 1D-3D space.
