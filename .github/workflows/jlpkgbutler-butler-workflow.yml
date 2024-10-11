@@ -3,6 +3,7 @@ name: Run the Julia Package Butler
 on:
   push:
     branches:
+      - main
       - master
   schedule:
     - cron: '0 */1 * * *'
@@ -17,5 +18,5 @@ jobs:
       - uses: davidanthoff/julia-pkgbutler@releases/v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          ssh-private-key: ${{ secrets.DOCUMENTER_KEY }}
+          ssh-private-key: ${{ secrets.JLPKGBUTLER_TOKEN }}
           channel: stable
