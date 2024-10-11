@@ -19,5 +19,5 @@ jobs:
           PYTHON: ""
       - uses: julia-actions/julia-docdeploy@latest
         env:
-          DOCUMENTER_KEY: ${{ secrets.JLPKGBUTLER_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
