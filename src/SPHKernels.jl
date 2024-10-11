@@ -9,7 +9,7 @@ module SPHKernels
             bias_correction,       δρ,
             kernel_gradient,      ∇𝒲, 
             quantity_gradient,    ∇𝒜,
-            kernel_div,           ∇̇dot𝒲,
+            kernel_div,           ∇dot𝒲,
             quantity_divergence,  ∇dot𝒜,
             kernel_curl,          ∇x𝒲,
             quantity_curl,        ∇x𝒜,
@@ -74,6 +74,13 @@ module SPHKernels
     """
     𝒲( kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_value(kernel, u, h_inv)
 
+    """
+        𝒲( kernel::AbstractSPHKernel, u::Real)
+
+    Evaluate kernel at position ``u = \\frac{x}{h}``, without normalisation.
+    """
+    𝒲( kernel::AbstractSPHKernel, u::Real) = kernel_value(kernel, u)
+
 
     """
         d𝒲( kernel::AbstractSPHKernel, u::Real, h_inv::Real)
@@ -81,6 +88,14 @@ module SPHKernels
     Evaluate derivative at position ``u = \\frac{x}{h}``.
     """
     d𝒲(kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_deriv(kernel, u, h_inv)
+
+    """
+        d𝒲( kernel::AbstractSPHKernel, u::Real)
+
+    Evaluate derivative at position ``u = \\frac{x}{h}``, without normalisation.
+    """
+    d𝒲(kernel::AbstractSPHKernel, u::Real) = kernel_deriv(kernel, u)
+
 
     """ 
         δρ₁(kernel::AbstractSPHKernel, density::Real, m::Real, h_inv::Real)
@@ -151,7 +166,7 @@ module SPHKernels
                     ∇𝒜(k, r, h_inv, Δx, A_j, m_j, ρ_j)
 
                     # divergence
-                    ∇̇dot𝒲(k, h_inv, x_i, x_j, A_j)
+                    ∇dot𝒲(k, h_inv, x_i, x_j, A_j)
                     ∇dot𝒜(k, h_inv, x_i, x_j, A_j, m_j, ρ_j)
 
                     # curl 

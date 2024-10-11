@@ -4,7 +4,7 @@
 
 Computes the value of the kernel `k` at the position of the neighbour `xⱼ`. 
 
-``W(\\vec{x}_i - \\vec{x}_j, h_i)``
+``W(x_i - x_j, h_i)``
 """
 function kernel_value( k::AbstractSPHKernel, h_inv::Real, 
                        xᵢ::Real, xⱼ::Real ) 
@@ -15,16 +15,15 @@ function kernel_value( k::AbstractSPHKernel, h_inv::Real,
 end
 
 """
-    kernel_value( k::AbstractSPHKernel, h_inv::Real, 
-                  xᵢ::Union{Real, Vector{<:Real}}, 
-                  xⱼ::Union{Real, Vector{<:Real}} )
+    kernel_value( k::AbstractSPHKernel, h_inv::T1, 
+                       xᵢ::T2, xⱼ::T2 ) where {T1,T2}
 
 Computes the value of the kernel `k` at the position of the neighbour `xⱼ`. 
 
 ``W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
-function kernel_value( k::AbstractSPHKernel, h_inv::Real, 
-                       xᵢ::Vector{<:Real}, xⱼ::Vector{<:Real} )
+function kernel_value( k::AbstractSPHKernel, h_inv::T1, 
+                       xᵢ::T2, xⱼ::T2 ) where {T1,T2}
     
     u  = get_r(xᵢ, xⱼ) * h_inv
 
@@ -33,25 +32,17 @@ end
 
 
 """
-    𝒜( k::AbstractSPHKernel, h_inv::Real, 
-        xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-        Aᵢ::Vector{<:Real},   Aⱼ::Vector{<:Real},
-        mⱼ::Real,             ρⱼ::Real )
+    𝒲( k::AbstractSPHKernel, h_inv, xᵢ, xⱼ)
 
-Compute the contribution of particle `j` to the SPH quantity `A` for particle `i`.
+Computes the value of the kernel `k` at the position of the neighbour `xⱼ`. 
 
-See e.g. Price 2012:
-``\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} W(\\vec{x}_i - \\vec{x}_j, h_i)``
+``W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
-𝒲( k::AbstractSPHKernel, h_inv::Real, 
-    xᵢ::Union{Real, Vector{<:Real}}, 
-    xⱼ::Union{Real, Vector{<:Real}}) = kernel_value( k, h_inv, xᵢ, xⱼ)
+𝒲( k::AbstractSPHKernel, h_inv, xᵢ, xⱼ) = kernel_value( k, h_inv, xᵢ, xⱼ)
 
 """
-    kernel_quantity( k::AbstractSPHKernel, h_inv::Real, 
-                     xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-                     Aⱼ::Vector{<:Real},
-                     mⱼ::Real,             ρⱼ::Real )
+    kernel_quantity(k::AbstractSPHKernel, r::T1, h_inv::T1, 
+                    Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
 
 Compute the contribution of particle `j` to the SPH quantity `A` for particle `i`.
 Based on Euclidean distance `r` between the particles. 
@@ -59,10 +50,8 @@ Useful if many quantities need to be computed for the same particle pair.
 
 ``\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
-function kernel_quantity( k::AbstractSPHKernel, 
-                          r::Real, h_inv::Real, 
-                          Aⱼ::Union{Real, Vector{<:Real}},
-                          mⱼ::Real,             ρⱼ::Real ) 
+function kernel_quantity( k::AbstractSPHKernel, r::T1, h_inv::T1, 
+                          Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
                  
     mj_wk = mⱼ / ρⱼ * 𝒲(k, r*h_inv, h_inv)
 
@@ -73,21 +62,16 @@ end
 
 
 """
-    kernel_quantity( k::AbstractSPHKernel, h_inv::Real, 
-                     xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-                     Aⱼ::Vector{<:Real},
-                     mⱼ::Real,             ρⱼ::Real )
+    kernel_quantity(k::AbstractSPHKernel, h_inv::T1, 
+                    xᵢ::T2, xⱼ::T2, Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
 
 Compute the contribution of particle `j` to the SPH quantity `A` for particle `i`.
 Based on positions `xᵢ` and `xⱼ`.
 
 ``\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
-function kernel_quantity( k::AbstractSPHKernel, h_inv::Real, 
-                 xᵢ::Union{Real, Vector{<:Real}}, 
-                 xⱼ::Union{Real, Vector{<:Real}},
-                 Aⱼ::Union{Real, Vector{<:Real}},
-                 mⱼ::Real,             ρⱼ::Real )
+function kernel_quantity(k::AbstractSPHKernel, h_inv::T1, 
+                         xᵢ::T2, xⱼ::T2, Aⱼ::Union{T1,T2}, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
                  
     mj_wk = mⱼ / ρⱼ * kernel_value( k, h_inv, xᵢ, xⱼ)
 
@@ -98,28 +82,22 @@ end
 
 
 """
-    𝒜( k::AbstractSPHKernel, h_inv::Real, 
-        xᵢ::Vector{<:Real},   xⱼ::Vector{<:Real},
-        Aⱼ::Vector{<:Real},
-        mⱼ::Real,             ρⱼ::Real )
+    𝒜(k::AbstractSPHKernel, h_inv::T1, 
+      xᵢ::Union{T1, T2}, xⱼ::Union{T1, T2},
+      Aⱼ::Union{T1, T2}, mⱼ::T1, ρⱼ::T1 ) where {T1,T2} 
 
 Compute the contribution of particle `j` to the SPH quantity `A` for particle `i`.
 Based on positions `xᵢ` and `xⱼ`.
 
 ``\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} W(\\vec{x}_i - \\vec{x}_j, h_i)``
 """
-𝒜( k::AbstractSPHKernel, h_inv::Real, 
-    xᵢ::Union{Real, Vector{<:Real}}, 
-    xⱼ::Union{Real, Vector{<:Real}},
-    Aⱼ::Union{Real, Vector{<:Real}},
-    mⱼ::Real,             ρⱼ::Real ) = kernel_quantity( k, h_inv, xᵢ, xⱼ, Aⱼ, mⱼ, ρⱼ)
+𝒜( k::AbstractSPHKernel, h_inv::T1, 
+    xᵢ::Union{T1, T2}, xⱼ::Union{T1, T2},
+    Aⱼ::Union{T1, T2}, mⱼ::T1, ρⱼ::T1 ) where {T1,T2} = kernel_quantity( k, h_inv, xᵢ, xⱼ, Aⱼ, mⱼ, ρⱼ)
 
 
 """
-    𝒜( k::AbstractSPHKernel, 
-        r::Real,  h_inv::Real, 
-        Aⱼ::Union{Real, Vector{<:Real}},
-        mⱼ::Real, ρⱼ::Real )
+    𝒜(k::AbstractSPHKernel, r::T1,  h_inv::T1, Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2}
 
 Compute the contribution of particle `j` to the SPH quantity `A` for particle `i`.
 Based on Euclidean distance `r` between the particles. 
@@ -127,7 +105,5 @@ Useful if many quantities need to be computed for the same particle pair.
 
 ``\\vec{A}_i(x) ≈ \\sum_j m_j \\frac{\\vec{A}_j}{\\rho_j} W(r, h_i)``
 """
-𝒜( k::AbstractSPHKernel, 
-    r::Real,  h_inv::Real, 
-    Aⱼ::Union{Real, Vector{<:Real}},
-    mⱼ::Real, ρⱼ::Real ) = kernel_quantity( k, r, h_inv, Aⱼ, mⱼ, ρⱼ)
+𝒜(k::AbstractSPHKernel, r::T1,  h_inv::T1, 
+  Aⱼ::T2, mⱼ::T1, ρⱼ::T1 ) where {T1,T2} = kernel_quantity( k, r, h_inv, Aⱼ, mⱼ, ρⱼ)

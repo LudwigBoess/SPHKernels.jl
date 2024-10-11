@@ -41,8 +41,7 @@ end
 
 function get_kernels(dim)
 
-    [ Cubic(dim), Quintic(dim)#, WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim)
-    ]
+    [ Cubic(dim), Quintic(dim)]
 
 end
 
@@ -51,9 +50,7 @@ x = LinRange(0, 1, N_samples)
 
 dims = [1, 2, 3]
 
-labels = ["Cubic", "Quintic", 
-         #"Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"
-         ]
+labels = ["Cubic", "Quintic"]
 
 colors = [ColorSchemes.romaO10[end-i] for i = 1:length(labels)]
 
@@ -131,8 +128,7 @@ end
 
 function get_kernels(dim)
 
-    [ WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim)
-    ]
+    [ WendlandC2(dim), WendlandC4(dim), WendlandC6(dim), WendlandC8(dim) ]
 
 end
 
@@ -141,8 +137,7 @@ x = LinRange(0, 1, N_samples)
 
 dims = [1, 2, 3]
 
-labels = ["Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"
-         ]
+labels = ["Wendland C2", "Wendland C4", "Wendland C6", "Wendland C8"]
 
 colors = [ColorSchemes.romaO10[end-i] for i = 1:length(labels)]
 
@@ -220,8 +215,7 @@ end
 
 function get_kernels(dim)
 
-    [ Tophat(), DoubleCosine(dim)
-    ]
+    [ Tophat(), DoubleCosine(dim)]
 
 end
 
@@ -346,6 +340,22 @@ or in the fancy way:
 
 ```julia
 d𝒲(kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_deriv(kernel, u, h_inv)
+```
+
+## Non-normalized kernels
+
+In some cases it may be useful to evaluate non-normalized kernels and apply the normalization at a later point. This saves some computing time in e.g. loops.
+
+For these cases you can evaluate the same functions as above, just without `h_inv`:
+
+```julia
+# non-normalized kernel value
+kernel_value(kernel::AbstractSPHKernel, u::Real)
+𝒲(kernel::AbstractSPHKernel, u::Real)
+
+# non-normalized kernel derivative
+kernel_deriv(kernel::AbstractSPHKernel, u::Real)
+d𝒲(kernel::AbstractSPHKernel, u::Real)
 ```
 
 ## Bias Correction

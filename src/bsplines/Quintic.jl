@@ -32,13 +32,11 @@ Define `Quintic` kernel with dimension `dim` for the native `DataType` of the OS
 Quintic(dim::Integer) = Quintic(typeof(1.0), dim)
 
 """
-    kernel_value(kernel::Quintic{T}, u::Real, h_inv::Real) where T
+    kernel_value(kernel::Quintic{T}, u::Real) where T
 
-Evaluate quintic spline at position ``u = \\frac{x}{h}``.
+Evaluate quintic spline at position ``u = \\frac{x}{h}``, without normalisation.
 """
-function kernel_value(kernel::Quintic{T}, u::Real, h_inv::Real) where {T}
-
-    n = kernel.norm * h_inv^kernel.dim
+function kernel_value(kernel::Quintic{T}, u::Real) where {T}
 
     if u < 1 / 3
         u_m1 = 1 - u
@@ -46,29 +44,34 @@ function kernel_value(kernel::Quintic{T}, u::Real, h_inv::Real) where {T}
         u_m13 = T(1 / 3) - u
         return (u_m1 * u_m1 * u_m1 * u_m1 * u_m1 -
                 6u_m23 * u_m23 * u_m23 * u_m23 * u_m23 +
-                15u_m13 * u_m13 * u_m13 * u_m13 * u_m13) * n |> T
+                15u_m13 * u_m13 * u_m13 * u_m13 * u_m13) |> T
     elseif u < 2 / 3
         u_m1 = 1 - u
         u_m23 = T(2 / 3) - u
         return (u_m1 * u_m1 * u_m1 * u_m1 * u_m1 -
-                6u_m23 * u_m23 * u_m23 * u_m23 * u_m23) * n |> T
+                6u_m23 * u_m23 * u_m23 * u_m23 * u_m23) |> T
     elseif u < 1
         u_m1 = 1 - u
-        return (u_m1 * u_m1 * u_m1 * u_m1 * u_m1) * n |> T
+        return (u_m1 * u_m1 * u_m1 * u_m1 * u_m1) |> T
     else
         return 0 |> T
     end
-
 end
 
 """
-    kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where T
+    kernel_value(kernel::Quintic{T}, u::Real, h_inv::Real) where T
 
-Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
+Evaluate quintic spline at position ``u = \\frac{x}{h}``.
 """
-function kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where {T}
+kernel_value(kernel::Quintic{T}, u::Real, h_inv::Real) where {T} = 
+    T(kernel.norm * h_inv^kernel.dim) * kernel_value(kernel, u)
 
-    n = kernel.norm * h_inv^(kernel.dim + 1)
+"""
+    kernel_deriv(kernel::Quintic{T}, u::Real) where T
+
+Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``, without normalisation.
+"""
+function kernel_deriv(kernel::Quintic{T}, u::Real) where {T}
 
     if u < 1 / 3
         u_m1 = 1 - u
@@ -76,20 +79,27 @@ function kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where {T}
         u_m13 = T(1 / 3) - u
         return (-5u_m1 * u_m1 * u_m1 * u_m1 +
                 30u_m23 * u_m23 * u_m23 * u_m23 -
-                75u_m13 * u_m13 * u_m13 * u_m13) * n |> T
+                75u_m13 * u_m13 * u_m13 * u_m13) |> T
     elseif u < 2 / 3
         u_m1 = 1 - u
         u_m23 = T(2 / 3) - u
         return (-5u_m1 * u_m1 * u_m1 * u_m1 +
-                30u_m23 * u_m23 * u_m23 * u_m23) * n |> T
+                30u_m23 * u_m23 * u_m23 * u_m23) |> T
     elseif u < 1
         u_m1 = 1 - u
-        return -5u_m1 * u_m1 * u_m1 * u_m1 * n |> T
+        return -5u_m1 * u_m1 * u_m1 * u_m1 |> T
     else
         return 0 |> T
     end
-
 end
+
+"""
+    kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where T
+
+Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
+"""
+kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where {T} = 
+    T(kernel.norm * h_inv^kernel.dim * h_inv) * kernel_deriv(kernel, u)
 
 """ 
     bias_correction( kernel::Quintic{T}, 
@@ -99,7 +109,7 @@ end
 Does not do anything for the BSplines. Implemented for stability.
 """
 function bias_correction(kernel::Quintic{T},
-    density::Real, m::Real, h_inv::Real,
-    n_neighbours::Integer) where {T}
+                        density::Real, m::Real, h_inv::Real,
+                        n_neighbours::Integer) where {T}
     return density
 end

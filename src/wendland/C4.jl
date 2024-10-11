@@ -37,17 +37,42 @@ Define `WendlandC4` kernel with dimension `dim` for the native `DataType` of the
 WendlandC4(dim::Integer) = WendlandC4(typeof(1.0), dim)
 
 """
+    kernel_value(kernel::WendlandC4{T}, u::Real) where T
+
+Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}`` without normalisation.
+"""
+function kernel_value(kernel::WendlandC4_1D{T}, u::Real) where {T}
+
+    if u < 1
+        t1 = 1 - u
+        t5 = t1 * t1 * t1 * t1 * t1
+        return (t5 * (1 + 5u + 8u^2)) |> T
+    else
+        return 0 |> T
+    end
+
+end
+
+
+"""
     kernel_value(kernel::WendlandC4{T}, u::Real, h_inv::Real) where T
 
 Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-function kernel_value(kernel::WendlandC4_1D{T}, u::Real, h_inv::Real) where {T}
+kernel_value(kernel::WendlandC4_1D{T}, 
+        u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv) * kernel_value(kernel, u)
+
+"""
+    kernel_deriv(kernel::WendlandC4_1D{T}, u::Real) where T
+
+Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}`` without normalisation.
+"""
+function kernel_deriv(kernel::WendlandC4_1D{T}, u::Real) where {T}
 
     if u < 1
-        n = kernel.norm * h_inv
         t1 = 1 - u
-        t5 = t1 * t1 * t1 * t1 * t1
-        return (t5 * (1 + 5u + 8u^2)) * n |> T
+        t4 = t1 * t1 * t1 * t1
+        return (-14u * t4 - 56u^2 * t4) |> T
     else
         return 0 |> T
     end
@@ -59,13 +84,21 @@ end
 
 Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-function kernel_deriv(kernel::WendlandC4_1D{T}, u::Real, h_inv::Real) where {T}
+kernel_deriv(kernel::WendlandC4_1D{T}, 
+    u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv^2) * kernel_deriv(kernel, u)
+
+
+"""
+    (kernel::WendlandC4{T}, u::Real) where T
+
+Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}`` without normalisation.
+"""
+function kernel_value(kernel::WendlandC4{T}, u::Real) where {T}
 
     if u < 1
-        n = kernel.norm * h_inv^2
         t1 = 1 - u
-        t4 = t1 * t1 * t1 * t1
-        return (-14u * t4 - 56u^2 * t4) * n |> T
+        t5 = t1 * t1 * t1 * t1 * t1
+        return (t1 * t5 * (1 + 6u + 35 / 3 * u^2)) |> T
     else
         return 0 |> T
     end
@@ -78,13 +111,20 @@ end
 
 Evaluate WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-function kernel_value(kernel::WendlandC4{T}, u::Real, h_inv::Real) where {T}
+kernel_value(kernel::WendlandC4{T}, 
+    u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv^kernel.dim) * kernel_value(kernel, u)
+
+"""
+    kernel_deriv_2D(kernel::WendlandC4{T}, u::Real) where T
+
+Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}`` without normalisation.
+"""
+function kernel_deriv(kernel::WendlandC4{T}, u::Real) where {T}
 
     if u < 1
-        n = kernel.norm * h_inv^kernel.dim
         t1 = 1 - u
         t5 = t1 * t1 * t1 * t1 * t1
-        return (t1 * t5 * (1 + 6u + 35 / 3 * u^2)) * n |> T
+        return (-288 / 3 * t5 * u^2 - 56 / 3 * u * t5) |> T
     else
         return 0 |> T
     end
@@ -96,18 +136,8 @@ end
 
 Evaluate the derivative of the WendlandC4 spline at position ``u = \\frac{x}{h}``.
 """
-function kernel_deriv(kernel::WendlandC4{T}, u::Real, h_inv::Real) where {T}
-
-    if u < 1
-        n = kernel.norm * h_inv^kernel.dim * h_inv
-        t1 = 1 - u
-        t5 = t1 * t1 * t1 * t1 * t1
-        return (-288 / 3 * t5 * u^2 - 56 / 3 * u * t5) * n |> T
-    else
-        return 0 |> T
-    end
-
-end
+kernel_deriv(kernel::WendlandC4{T}, 
+    u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv^kernel.dim * h_inv) * kernel_deriv(kernel, u)
 
 
 """ 
