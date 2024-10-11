@@ -13,6 +13,7 @@ module SPHKernels
             quantity_divergence,  ∇dot𝒜,
             kernel_curl,          ∇x𝒲,
             quantity_curl,        ∇x𝒜,
+            density_estimate, ρⱼ,
             AbstractSPHKernel, 
             Cubic, 
             Quintic,
@@ -65,6 +66,7 @@ module SPHKernels
     include("sph_functions/div.jl")
     include("sph_functions/curl.jl")
     include("sph_functions/quantity.jl")
+    include("sph_functions/density.jl")
 
     # multiple dispatch for nicer look
     """
