@@ -747,6 +747,12 @@ using SPHKernels, Test
             @test d𝒲(k, 0.5) ≈ kernel_deriv(k, 0.5)
         end
 
+        @testset "kernel normalisation" begin
+            k = WendlandC6()
+            h_inv = 0.5
+            @test 𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim
+            @test d𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim * h_inv 
+        end
         @testset "bias correction" begin
             k = WendlandC6()
             @test δρ(k, 1.0, 1.0, 0.5, 128) ≈ bias_correction(k, 1.0, 1.0, 0.5, 128)
