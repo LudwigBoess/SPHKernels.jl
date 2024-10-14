@@ -748,10 +748,15 @@ using SPHKernels, Test
         end
 
         @testset "kernel normalisation" begin
-            k = WendlandC6()
+
             h_inv = 0.5
-            @test 𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim
-            @test d𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim * h_inv 
+            kernels = vcat([kernel(dt, dim) for kernel ∈ [Cubic, Quintic, WendlandC2, WendlandC4, WendlandC6, WendlandC8, DoubleCosine],
+                                        dt ∈ [Float32, Float64], dim ∈ [1, 2, 3]]...)
+
+            for k ∈ kernels
+                @test 𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim
+                @test d𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim * h_inv 
+            end
         end
         @testset "bias correction" begin
             k = WendlandC6()
