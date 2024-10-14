@@ -358,6 +358,30 @@ kernel_deriv(kernel::AbstractSPHKernel, u::Real)
 d𝒲(kernel::AbstractSPHKernel, u::Real)
 ```
 
+To apply the normalisation yourself you can use
+
+```julia
+# kernel values
+kernel_norm(kernel::AbstractSPHKernel, h_inv::Real)
+𝒩(kernel::AbstractSPHKernel, h_inv::Real)
+
+# kernel derivatives
+kernel_deriv_norm(kernel::AbstractSPHKernel, h_inv::Real)
+d𝒩(kernel::AbstractSPHKernel, h_inv::Real)
+```
+
+such that the following holds
+
+```julia
+# kernel values
+kernel_value(kernel, u, h_inv) == kernel_norm(kernel, h_inv) * kernel_value(kernel, u)
+𝒲(kernel, u, h_inv) == 𝒩(kernel, h_inv) * 𝒲(kernel, u)
+
+# kernel derivatives
+kernel_deriv(kernel, u, h_inv) == kernel_deriv_norm(kernel, h_inv) * kernel_deriv(kernel, u)
+d𝒲(kernel, u, h_inv) == d𝒩(kernel, h_inv) * d𝒲(kernel, u)
+```
+
 ## Bias Correction
 
 You can correct for the kernel bias of the Wendland kernels as described in [Dehnen & Aly (2012)](https://academic.oup.com/mnras/article/425/2/1068/1187211), Eq. 18 + 19 with the functions:
