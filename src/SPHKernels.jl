@@ -197,6 +197,10 @@ module SPHKernels
 
                 for k ∈ kernels
                     for u ∈ dt.([ 0.3, 0.5, 0.8, 1.5])
+                        kernel_norm(k, dt(0.5))
+                        𝒩(k, dt(0.5))
+                        kernel_deriv_norm(k, dt(0.5))
+                        d𝒩(k, dt(0.5))
                         kernel_value(k, u, dt(0.5))
                         𝒲(k, u, dt(0.5))
                         kernel_deriv(k, u, dt(0.5))
