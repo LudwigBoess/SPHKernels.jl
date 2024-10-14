@@ -242,7 +242,7 @@ using SPHKernels, Test
             k = WendlandC2(1)
             # < 1.0
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -0.46875
+            @test d ≈ -0.234375
             # > 1.0
             d = kernel_deriv(k, 1.5, 0.5)
             @test d == 0.0
@@ -747,6 +747,17 @@ using SPHKernels, Test
             @test d𝒲(k, 0.5) ≈ kernel_deriv(k, 0.5)
         end
 
+        @testset "kernel normalisation" begin
+
+            h_inv = 0.5
+            kernels = vcat([kernel(dt, dim) for kernel ∈ [Cubic, Quintic, WendlandC2, WendlandC4, WendlandC6, WendlandC8, DoubleCosine],
+                                        dt ∈ [Float32, Float64], dim ∈ [1, 2, 3]]...)
+
+            for k ∈ kernels
+                @test 𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim
+                @test d𝒩(k, h_inv) ≈ k.norm * h_inv^k.dim * h_inv 
+            end
+        end
         @testset "bias correction" begin
             k = WendlandC6()
             @test δρ(k, 1.0, 1.0, 0.5, 128) ≈ bias_correction(k, 1.0, 1.0, 0.5, 128)

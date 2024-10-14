@@ -1,5 +1,5 @@
 struct Quintic{T} <: AbstractSPHKernel
-    dim::Int64
+    dim::Int8
     norm::T
 end
 
@@ -54,17 +54,9 @@ function kernel_value(kernel::Quintic{T}, u::Real) where {T}
         u_m1 = 1 - u
         return (u_m1 * u_m1 * u_m1 * u_m1 * u_m1) |> T
     else
-        return 0 |> T
+        return zero(T)
     end
 end
-
-"""
-    kernel_value(kernel::Quintic{T}, u::Real, h_inv::Real) where T
-
-Evaluate quintic spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_value(kernel::Quintic{T}, u::Real, h_inv::Real) where {T} = 
-    T(kernel.norm * h_inv^kernel.dim) * kernel_value(kernel, u)
 
 """
     kernel_deriv(kernel::Quintic{T}, u::Real) where T
@@ -89,17 +81,10 @@ function kernel_deriv(kernel::Quintic{T}, u::Real) where {T}
         u_m1 = 1 - u
         return -5u_m1 * u_m1 * u_m1 * u_m1 |> T
     else
-        return 0 |> T
+        return zero(T)
     end
 end
 
-"""
-    kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where T
-
-Evaluate the derivative of the Quintic spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_deriv(kernel::Quintic{T}, u::Real, h_inv::Real) where {T} = 
-    T(kernel.norm * h_inv^kernel.dim * h_inv) * kernel_deriv(kernel, u)
 
 """ 
     bias_correction( kernel::Quintic{T}, 

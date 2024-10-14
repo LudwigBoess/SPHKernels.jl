@@ -4,10 +4,13 @@
 
 module SPHKernels
 
-    export  kernel_value,          𝒲,  𝒜,
+    export  kernel_norm,           𝒩,
+            kernel_deriv_norm,    d𝒩,
+            kernel_value,          𝒲,  
             kernel_deriv,         d𝒲,
             bias_correction,       δρ,
-            kernel_gradient,      ∇𝒲, 
+            kernel_gradient,      ∇𝒲,
+            kernel_quantity,       𝒜,
             quantity_gradient,    ∇𝒜,
             kernel_div,           ∇dot𝒲,
             quantity_divergence,  ∇dot𝒜,
@@ -31,6 +34,14 @@ module SPHKernels
     Supertype for all SPH kernels.
     """
     abstract type AbstractSPHKernel end
+
+    """
+        WendlandKernel
+
+    Supertype for Wendland kernels.
+    """
+    abstract type WendlandKernel <: AbstractSPHKernel end
+
 
     """
         get_r(xᵢ::Vector{<:Real}, xⱼ::Vector{<:Real})
@@ -59,6 +70,7 @@ module SPHKernels
     include("wendland/C4.jl")
     include("wendland/C6.jl")
     include("wendland/C8.jl")
+    include("wendland/shared.jl")
     include("tophat/tophat.jl")
     include("trigonometric/double_cosine.jl")
     include("sph_functions/gradient.jl")
@@ -66,31 +78,87 @@ module SPHKernels
     include("sph_functions/curl.jl")
     include("sph_functions/quantity.jl")
 
+    # shared default functions 
+
+    """
+        kernel_norm(kernel::AbstractSPHKernel, h_inv::Real) where {T}
+
+    Calculate the normalisation factor for the kernel.
+    """
+    function kernel_norm(kernel::AbstractSPHKernel, h_inv::Real)
+        if kernel.dim == Int8(1)
+            return kernel.norm * h_inv
+        end
+        if kernel.dim == Int8(2)
+            return kernel.norm * h_inv*h_inv
+        end
+        if kernel.dim == Int8(3)
+            return kernel.norm * h_inv*h_inv*h_inv
+        end
+    end
+
+    """
+        kernel_deriv_norm(kernel::AbstractSPHKernel, h_inv::Real)
+
+    Calculate the normalisation factor for the kernel derivative.
+    """
+    kernel_deriv_norm(kernel::AbstractSPHKernel, h_inv::Real) = h_inv * kernel_norm(kernel, h_inv)
+
+    """
+        kernel_value(kernel::AbstractSPHKernel, u::Real, h_inv::Real) where T
+
+    Evaluate the kernel at position ``u = \\frac{x}{h}``.
+    """
+    kernel_value(kernel::AbstractSPHKernel, u::Real, h_inv::Real) = 
+            kernel_norm(kernel, h_inv) * kernel_value(kernel, u)
+
+    """
+        kernel_deriv(kernel::AbstractSPHKernel, u::Real, h_inv::Real) where T
+
+    Evaluate the derivative of the kernel at position ``u = \\frac{x}{h}``.
+    """
+    kernel_deriv(kernel::AbstractSPHKernel, u::Real, h_inv::Real) = 
+        kernel_deriv_norm(kernel, h_inv) * kernel_deriv(kernel, u)
+
+        
     # multiple dispatch for nicer look
+    """
+        𝒩(kernel::AbstractSPHKernel, h_inv::Real)
+
+    Calculate the normalisation factor for the kernel.
+    """
+    𝒩(kernel::AbstractSPHKernel, h_inv::Real) = kernel_norm(kernel, h_inv)
+
+    """
+        d𝒩(kernel::AbstractSPHKernel, h_inv::Real)
+
+    Calculate the normalisation factor for the kernel derivative.
+    """
+    d𝒩(kernel::AbstractSPHKernel, h_inv::Real) = kernel_deriv_norm(kernel, h_inv)
+
     """
         𝒲( kernel::AbstractSPHKernel, u::Real, h_inv::Real)
 
     Evaluate kernel at position ``u = \\frac{x}{h}``.
     """
-    𝒲( kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_value(kernel, u, h_inv)
+    𝒲(kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_value(kernel, u, h_inv)
 
     """
         𝒲( kernel::AbstractSPHKernel, u::Real)
 
     Evaluate kernel at position ``u = \\frac{x}{h}``, without normalisation.
     """
-    𝒲( kernel::AbstractSPHKernel, u::Real) = kernel_value(kernel, u)
-
+    𝒲(kernel::AbstractSPHKernel, u::Real) = kernel_value(kernel, u)
 
     """
-        d𝒲( kernel::AbstractSPHKernel, u::Real, h_inv::Real)
+        d𝒲(kernel::AbstractSPHKernel, u::Real, h_inv::Real)
 
     Evaluate derivative at position ``u = \\frac{x}{h}``.
     """
     d𝒲(kernel::AbstractSPHKernel, u::Real, h_inv::Real) = kernel_deriv(kernel, u, h_inv)
 
     """
-        d𝒲( kernel::AbstractSPHKernel, u::Real)
+        d𝒲(kernel::AbstractSPHKernel, u::Real)
 
     Evaluate derivative at position ``u = \\frac{x}{h}``, without normalisation.
     """
@@ -129,6 +197,10 @@ module SPHKernels
 
                 for k ∈ kernels
                     for u ∈ dt.([ 0.3, 0.5, 0.8, 1.5])
+                        kernel_norm(k, dt(0.5))
+                        𝒩(k, dt(0.5))
+                        kernel_deriv_norm(k, dt(0.5))
+                        d𝒩(k, dt(0.5))
                         kernel_value(k, u, dt(0.5))
                         𝒲(k, u, dt(0.5))
                         kernel_deriv(k, u, dt(0.5))

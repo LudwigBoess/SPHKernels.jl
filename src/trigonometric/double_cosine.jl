@@ -9,7 +9,7 @@
     end
 """
 struct DoubleCosine{T} <: AbstractSPHKernel
-    dim::Int64
+    dim::Int8
     norm::T
 end
 
@@ -49,19 +49,12 @@ Evaluate DoubleCosine spline at position ``u = \\frac{x}{h}``, without normalisa
 function kernel_value(kernel::DoubleCosine{T}, u::Real) where {T}
 
     if u < 1
-        return (4 * cos(π * u) + cos(2π * u) + 3)
+        return (4 * cos(π * u) + cos(2π * u) + 3) |> T
     else
-        return 0 |> T
+        return zero(T)
     end
 
 end
-
-"""
-    kernel_value(kernel::DoubleCosine, u::Real, h_inv::Real)
-Evaluate DoubleCosine spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_value(kernel::DoubleCosine{T}, u::Real, h_inv::Real) where {T} =
-    T(kernel.norm * h_inv^kernel.dim) * kernel_value(kernel, u)
 
 
 """
@@ -72,20 +65,12 @@ Evaluate the derivative of the DoubleCosine spline at position ``u = \\frac{x}{h
 function kernel_deriv(kernel::DoubleCosine{T}, u::Real) where {T}
 
     if u < 1
-        return (-4π * sin(π * u) - 2π * sin(2π * u))
+        return (-4π * sin(π * u) - 2π * sin(2π * u)) |> T
     else
-        return 0 |> T
+        return zero(T)
     end
 
 end
-
-"""
-    kernel_deriv(kernel::DoubleCosine, u::Real, h_inv::Real)
-
-Evaluate the derivative of the DoubleCosine spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_deriv(kernel::DoubleCosine{T}, u::Real, h_inv::Real) where {T} = 
-    T(kernel.norm * h_inv^kernel.dim * h_inv) * kernel_deriv(kernel, u)
 
 
 """ 

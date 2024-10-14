@@ -1,5 +1,5 @@
 struct Cubic{T} <: AbstractSPHKernel
-    dim::Int64
+    dim::Int8
     norm::T
 end
 
@@ -39,23 +39,16 @@ Evaluate cubic spline at position ``u = \\frac{x}{h}``, without normalisation.
 function kernel_value(kernel::Cubic{T}, u::Real) where {T}
 
     if u < 0.5
-        return (1 + 6 * (u - 1) * u^2) |> T
+        return (1 + 6 * (u - 1) * u*u) |> T
     elseif u < 1
-        u_m1 = 1 - u
-        return 2u_m1^3 |> T
+        t1 = 1 - u
+        t1 = t1 * t1 * t1
+        return 2t1 |> T
     else
-        return 0.0 |> T
+        return zero(T)
     end
 
 end
-
-"""
-    kernel_value_1D(kernel::Cubic{T}, u::Real, h_inv::Real) where T
-
-Evaluate cubic spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_value(kernel::Cubic{T}, u::Real, h_inv::Real) where {T} = 
-    T(kernel.norm * h_inv^kernel.dim) * kernel_value(kernel, u)
 
 
 """
@@ -68,22 +61,14 @@ function kernel_deriv(kernel::Cubic{T}, u::Real) where {T}
     if u < 0.5
         return (u * (18u - 12)) |> T
     elseif u < 1
-        u_m1 = 1 - u
-        return -6u_m1^2 |> T
+        t1 = 1 - u
+        t1 *= t1
+        return -6t1 |> T
     else
-        return 0.0 |> T
+        return zero(T)
     end
 
 end
-
-
-"""
-    kernel_deriv(kernel::Cubic{T}, u::Real, h_inv::Real) where T
-
-Evaluate the derivative of the Cubic spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_deriv(kernel::Cubic{T}, u::Real, h_inv::Real) where {T} = 
-    T(kernel.norm * h_inv^kernel.dim * h_inv) * kernel_deriv(kernel, u)
 
 
 """ 
