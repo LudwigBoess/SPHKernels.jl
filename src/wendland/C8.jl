@@ -1,10 +1,10 @@
-struct WendlandC8{T} <: AbstractSPHKernel
-    dim::Int64
+struct WendlandC8{T} <: WendlandKernel
+    dim::Int8
     norm::T
 end
 
-struct WendlandC8_1D{T} <: AbstractSPHKernel
-    dim::Int64
+struct WendlandC8_1D{T} <: WendlandKernel
+    dim::Int8
     norm::T
 end
 
@@ -47,7 +47,9 @@ function kernel_value(kernel::WendlandC8_1D{T}, u::Real) where {T}
 
     if u < 1
         t1 = 1 - u
-        t8 = t1 * t1 * t1 * t1 * t1 * t1 * t1 * t1
+        t8 = t1*t1 # (1-u)^2
+        t8 = t8*t8 # (1-u)^4
+        t8 = t8*t8 # (1-u)^8        
         u2 = u * u
         return (t8 * t1 * (384u2 * u2 + 43u2 * u + 2237u2 + 63u + 7)) |> T
     else
@@ -55,14 +57,6 @@ function kernel_value(kernel::WendlandC8_1D{T}, u::Real) where {T}
     end
 
 end
-
-"""
-    kernel_value(kernel::WendlandC8_1D{T}, u::Real, h_inv::Real) where T
-
-Evaluate WendlandC8 spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_value(kernel::WendlandC8_1D{T}, 
-    u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv) * kernel_value(kernel, u)
 
 
 """
@@ -83,14 +77,6 @@ function kernel_deriv(kernel::WendlandC8_1D{T}, u::Real) where {T}
 
 end
 
-"""
-    kernel_deriv(kernel::WendlandC8_1D{T}, u::Real, h_inv::Real) where T
-
-Evaluate the derivative of the WendlandC8 spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_deriv(kernel::WendlandC8_1D{T}, 
-    u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv^2) * kernel_deriv(kernel, u)
-
 
 """
     kernel_value(kernel::WendlandC8{T}, u::Real) where T
@@ -101,7 +87,10 @@ function kernel_value(kernel::WendlandC8{T}, u::Real) where {T}
 
     if u < 1
         t1 = 1 - u
-        t9 = t1 * t1 * t1 * t1 * t1 * t1 * t1 * t1 * t1  # (1.0 - u)^9
+        t9 = t1*t1 # (1-u)^2
+        t9 = t9*t9 # (1-u)^4
+        t9 = t9*t9 # (1-u)^8
+        t9 = t9*t1 # (1-u)^9
         u2 = u * u
         return (t1 * t9 * (5 + 50u + 210u2 + 450u2 * u + 429u2 * u2)) |> T
     else
@@ -109,14 +98,6 @@ function kernel_value(kernel::WendlandC8{T}, u::Real) where {T}
     end
 
 end
-
-"""
-    kernel_value(kernel::WendlandC8{T}, u::Real, h_inv::Real) where T
-
-Evaluate WendlandC8 spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_value(kernel::WendlandC8{T}, 
-    u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv^kernel.dim) * kernel_value(kernel, u)
 
 """
     kernel_deriv_2D(kernel::WendlandC8{T}, u::Real) where T
@@ -127,7 +108,10 @@ function kernel_deriv(kernel::WendlandC8{T}, u::Real) where {T}
 
     if u < 1
         t1 = 1.0 - u
-        t9 = t1 * t1 * t1 * t1 * t1 * t1 * t1 * t1 * t1  # (1.0 - u)^9
+        t9 = t1*t1 # (1-u)^2
+        t9 = t9*t9 # (1-u)^4
+        t9 = t9*t9 # (1-u)^8
+        t9 = t9*t1 # (1-u)^9
         u2 = u * u
         return -26t9 * u * (231u2 * u + 159u2 + 45u + 5) |> T
     else
@@ -135,14 +119,6 @@ function kernel_deriv(kernel::WendlandC8{T}, u::Real) where {T}
     end
 
 end
-
-"""
-    kernel_deriv_2D(kernel::WendlandC8{T}, u::Real, h_inv::Real) where T
-
-Evaluate the derivative of the WendlandC8 spline at position ``u = \\frac{x}{h}``.
-"""
-kernel_deriv(kernel::WendlandC8{T}, 
-    u::Real, h_inv::Real) where {T} = T(kernel.norm * h_inv^kernel.dim * h_inv) * kernel_deriv(kernel, u)
 
 
 """ 

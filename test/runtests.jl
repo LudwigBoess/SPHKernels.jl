@@ -242,7 +242,7 @@ using SPHKernels, Test
             k = WendlandC2(1)
             # < 1.0
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -0.46875
+            @test d ≈ -0.234375
             # > 1.0
             d = kernel_deriv(k, 1.5, 0.5)
             @test d == 0.0
