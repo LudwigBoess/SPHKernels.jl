@@ -1,7 +1,7 @@
 name = "SPHKernels"
 uuid = "54ab9b88-2582-4358-b400-8014666a1730"
 authors = ["LudwigBoess <lboess@usm.lmu.de>"]
-version = "2.4.0"
+version = "2.4.1"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
