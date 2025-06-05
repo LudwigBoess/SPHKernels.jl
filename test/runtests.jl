@@ -1,4 +1,4 @@
-using SPHKernels, Test
+using SPHKernels, Test, Aqua
 
 @testset "SPH Kernels" begin
 
@@ -763,6 +763,10 @@ using SPHKernels, Test
             @test δρ(k, 1.0, 1.0, 0.5, 128) ≈ bias_correction(k, 1.0, 1.0, 0.5, 128)
         end
         
+    end
+
+    @testset "Aqua.jl (code quality)" begin
+        Aqua.test_all(SPHKernels)
     end
 
 end
