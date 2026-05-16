@@ -357,7 +357,7 @@ using SPHKernels, Test, Aqua
             k = WendlandC4(2)
             # < 1.0
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -0.37301939787162974
+            @test d ≈ -0.3655590099141971
             # > 1.0
             d = kernel_deriv(k, 1.5, 0.5)
             @test d == 0.0
@@ -384,7 +384,7 @@ using SPHKernels, Test, Aqua
             k = WendlandC4(3)
             # < 1.0
             d = kernel_deriv(k, 0.5, 0.5)
-            @test d ≈ -0.3205635450459318
+            @test d ≈ -0.3141522741450131
             # > 1.0
             d = kernel_deriv(k, 1.5, 0.5)
             @test d == 0.0

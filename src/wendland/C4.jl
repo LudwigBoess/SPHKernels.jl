@@ -106,7 +106,7 @@ function kernel_deriv(kernel::WendlandC4{T}, u::Real) where {T}
         t5 = t1 * t1   # (1-u)^2
         t5 *= t5       # (1-u)^4
         t5 *= t1       # (1-u)^5
-        return (-288 / 3 * t5 * u^2 - 56 / 3 * u * t5) |> T
+        return (-280 / 3 * t5 * u^2 - 56 / 3 * u * t5) |> T
     else
         return 0 |> T
     end
